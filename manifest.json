@@ -1,0 +1,17 @@
+{
+  "name": "Local for a Day — San Miguel Congregation",
+  "short_name": "Local for a Day",
+  "description": "Companion guide and daily itinerary for visiting international delegates in Bulacan for the 2026 International Convention.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FAF9F5",
+  "theme_color": "#0E4D45",
+  "icons": [
+    {
+      "src": "assets/images/jw_ic_logo-removebg-preview.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

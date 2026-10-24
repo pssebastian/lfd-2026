@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Local for a Day — Event Program Schedule for visiting international delegates. San Miguel Congregation, 2026 International Convention.">
+  <meta name="theme-color" content="#041412">
+  <title>Event Program | Local for a Day 2026</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#0e4d45',
+              950: '#051a17',
+            },
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            script: ['"Dancing Script"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- html2canvas & jsPDF for Pixel-Perfect Image and PDF Generation -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-[#FAF9F5] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900">
+
+  <!-- Top Simple Navigation Bar -->
+  <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 transition-all no-print">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="delegate.html" class="flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-brand-900 transition-colors">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Back to Delegate Portal</span>
+      </a>
+
+      <!-- Live PHT Clock Indicator -->
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-900 text-xs font-semibold">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-700"></i>
+        <span id="live-clock">Loading...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content: Only the Timeline Program Sheet & Export Controls -->
+  <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6 max-w-5xl mx-auto w-full">
+
+    <!-- =====================================================================
+         Copied Event Program Sheet (Targets html2canvas and Print)
+         ===================================================================== -->
+    <div id="program-sheet" class="program-sheet bg-white mb-10">
+      
+      <!-- Program Header Banner (Matching Attached Template) -->
+      <div class="program-header p-6 sm:p-10 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+          
+          <div class="space-y-3">
+            <!-- Logo & Badge -->
+            <div class="flex items-center gap-3">
+              <img src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="Convention Logo" class="w-12 h-12 object-contain drop-shadow">
+              <div>
+                <span class="block text-xs uppercase tracking-[0.22em] text-amber-300 font-bold">2026 International Convention</span>
+                <span class="block text-xs text-slate-300 font-semibold">San Miguel & Mercado Congregation</span>
+              </div>
+            </div>
+
+            <!-- Title inspired by template "EVENT Program" -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+              LOCAL FOR A DAY <span class="font-script text-amber-300 text-4xl sm:text-5xl md:text-6xl font-normal ml-1">Program</span>
+            </h1>
+
+            <!-- Sub-headline matching template's tagline -->
+            <p class="text-slate-200 text-xs sm:text-sm font-medium tracking-wide">
+              Bringing brothers and sisters together in warm Christian love
+            </p>
+          </div>
+
+          <!-- Right Floating Date & Time Badge (Matching Template) -->
+          <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[170px] shadow-lg self-stretch md:self-auto flex flex-col justify-center">
+            <div class="flex items-center justify-center gap-2 mb-1">
+              <i data-lucide="calendar" class="w-4 h-4 text-amber-300"></i>
+              <span class="font-extrabold text-white text-base tracking-wide">14 NOV 2026</span>
+            </div>
+            <span class="text-xs text-amber-200/90 font-medium">Saturday</span>
+            <div class="mt-2 pt-2 border-t border-white/10 text-[11px] font-semibold text-slate-300">
+              07:15 AM – 08:45 PM
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Program Body: 2 Columns on Desktop, Stacked on Mobile -->
+      <div class="grid grid-cols-1 md:grid-cols-12 bg-white">
+        
+        <!-- Left Column (Sidebar Info Cards, matching template) -->
+        <div class="md:col-span-4 bg-slate-50/70 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-slate-200/80 space-y-7">
+          
+          <!-- Date Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">DATE</span>
+            <p class="text-sm font-bold text-slate-900">14 November 2026</p>
+            <p class="text-xs text-slate-600">Saturday</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Venue Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">MAIN VENUE</span>
+            <p class="text-sm font-bold text-slate-900 leading-snug">San Miguel & Mercado Kingdom Hall</p>
+            <p class="text-xs text-slate-600">Hagonoy, Bulacan, Philippines</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Audience Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="users" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">AUDIENCE</span>
+            <p class="text-sm font-bold text-slate-900">Visiting International Delegates</p>
+            <p class="text-xs text-slate-600">San Miguel Host Group</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Host Congregation Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">HOST CONGREGATION</span>
+            <p class="text-sm font-bold text-slate-900">San Miguel Congregation</p>
+            <p class="text-xs text-slate-600">Bulacan, Philippines</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Passcode Reference Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="key" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">DELEGATE GROUP CODE</span>
+            <span class="inline-block px-2.5 py-1 bg-amber-50 text-amber-900 font-mono font-bold text-xs rounded-md border border-amber-200">
+              WYEYGLMLR4PX
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Right Column (The Schedule Table Rows) -->
+        <div class="md:col-span-8 p-2 sm:p-4 divide-y divide-slate-100">
+          <div id="program-schedule-items">
+            <!-- Rendered dynamically via app.js -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =====================================================================
+         Save & Print Callout Box
+         ===================================================================== -->
+    <div class="card-clean p-6 sm:p-8 bg-gradient-to-br from-white to-amber-50/40 border-2 border-amber-200 text-center relative overflow-hidden shadow-md no-print">
+      <div class="max-w-lg mx-auto">
+        
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mb-4 shadow-sm">
+          <i data-lucide="image" class="w-6 h-6"></i>
+        </div>
+
+        <h3 class="text-xl font-bold text-slate-900 mb-2">
+          Keep Your Schedule Always Accessible
+        </h3>
+
+        <p class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+          Download or save an exact image copy or PDF of this schedule to your phone so you can view it anytime, even without an internet connection.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <!-- Save as Image -->
+          <button 
+            type="button" 
+            id="btn-save-image" 
+            class="touch-target w-full sm:w-auto px-7 py-3.5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base"
+          >
+            <i data-lucide="image" class="w-5 h-5 text-amber-400"></i>
+            <span>Save Schedule as Image</span>
+          </button>
+
+          <!-- Save as PDF -->
+          <button 
+            type="button" 
+            id="btn-save-pdf" 
+            class="touch-target w-full sm:w-auto px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base"
+          >
+            <i data-lucide="file-text" class="w-5 h-5 text-slate-950"></i>
+            <span>Save Schedule as PDF</span>
+          </button>
+
+          <!-- Print -->
+          <button 
+            type="button" 
+            id="btn-print-schedule" 
+            class="touch-target w-full sm:w-auto px-5 py-3.5 bg-white hover:bg-slate-100 text-slate-800 font-bold rounded-full border border-slate-300 shadow-sm transition-all inline-flex items-center justify-center gap-2 text-sm"
+            title="Open System Print Dialog"
+          >
+            <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
+            <span>Print</span>
+          </button>
+        </div>
+
+        <p class="text-[11px] text-slate-500 mt-3 font-medium">
+          *Saves a pixel-perfect, high-resolution file of the complete schedule formatted above for offline viewing on your phone.
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-6 px-4 text-center text-xs no-print">
+    <p class="font-semibold text-slate-200">San Miguel Congregation · 2026 International Convention</p>
+    <p class="text-[11px] text-slate-500 mt-1">Local for a Day Event Program</p>
+  </footer>
+
+  <!-- Passcode Unlock Modal (For Direct Access) -->
+  <div id="auth-gate-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden animate-fade-in no-print" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative text-center">
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-brand-50 text-brand-900 flex items-center justify-center mb-3">
+        <i data-lucide="lock" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-xl font-bold text-slate-900">
+        Delegate Access Required
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-500 mt-1 mb-5">
+        Please enter the group passcode to unlock your delegate program.
+      </p>
+
+      <form id="delegate-gate-form" class="space-y-4">
+        <div>
+          <input 
+            type="text" 
+            id="delegate-gate-input" 
+            class="w-full px-4 py-3 text-center tracking-widest font-mono font-bold text-base uppercase rounded-xl border border-slate-300 focus:border-brand-900 focus:ring-2 focus:ring-brand-900/20 focus:outline-none transition-all placeholder:text-slate-300"
+            placeholder="WYEYGLMLR4PX"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            required
+          >
+          <div id="delegate-gate-error" class="hidden mt-2 text-xs text-rose-600 font-semibold flex items-center justify-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span>Incorrect code. Please re-enter.</span>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3.5 px-5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+        >
+          <span>Unlock Program</span>
+          <i data-lucide="unlock" class="w-4 h-4 text-amber-400"></i>
+        </button>
+
+        <a href="index.html" class="inline-block text-xs text-slate-500 hover:text-slate-700 mt-2 font-medium">
+          ← Back to Welcome Page
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const gateForm = document.getElementById('delegate-gate-form');
+      const gateInput = document.getElementById('delegate-gate-input');
+      const gateError = document.getElementById('delegate-gate-error');
+      const gateModal = document.getElementById('auth-gate-modal');
+
+      if (gateForm) {
+        gateForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const entered = gateInput.value.trim().toUpperCase();
+          if (verifyPasscode(entered)) {
+            sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+            gateModal.classList.add('hidden');
+            showToast("Welcome! Program unlocked.");
+          } else {
+            gateError.classList.remove('hidden');
+            gateInput.classList.add('border-rose-500', 'bg-rose-50');
+            gateInput.focus();
+            gateInput.select();
+          }
+        });
+
+        gateInput.addEventListener('input', () => {
+          gateError.classList.add('hidden');
+          gateInput.classList.remove('border-rose-500', 'bg-rose-50');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

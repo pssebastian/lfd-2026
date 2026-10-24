@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Local for a Day — San Miguel Congregation. Welcome portal for the 2026 International Convention - LFD Event.">
+  <meta name="theme-color" content="#0e4d45">
+  <title>Welcome | Local for a Day 2026</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#0e4d45',
+              950: '#072e29',
+            },
+            amber: {
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            cinzel: ['"Cinzel"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-[#FAF9F5] text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900">
+
+  <!-- Main Welcome Container (Vertically centered; seamless background) -->
+  <main class="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 my-auto w-full">
+    <div class="w-full max-w-md mx-auto my-auto">
+      
+      <!-- Convention Logo & International Convention Label -->
+      <div class="flex flex-col items-center justify-center mb-8 sm:mb-10 text-center">
+        <img src="assets/images/jw_ic_logo-removebg-preview.png" alt="International Convention Logo" class="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-sm mb-3">
+        <span class="text-xs font-bold uppercase tracking-[0.25em] text-slate-600">
+          JW International Convention
+        </span>
+      </div>
+
+      <!-- Welcome Heading with Distinct Creative Hierarchy -->
+      <div class="text-center mb-8 sm:mb-10">
+        <h1 class="tracking-tight">
+          <!-- Least Emphasis -->
+          <span class="block text-xs sm:text-sm font-semibold uppercase tracking-[0.28em] text-slate-500 mb-1.5">
+            Become a
+          </span>
+          <!-- Most Emphasis -->
+          <span class="block text-4xl sm:text-5xl font-black text-brand-900 leading-tight tracking-tight drop-shadow-sm">
+            Local for a Day
+          </span>
+          <!-- Supporting Emphasis -->
+          <span class="block text-base sm:text-lg font-bold text-slate-700 mt-2">
+            with San Miguel Congregation
+          </span>
+        </h1>
+      </div>
+
+      <!-- Options Container (Includes selection instruction prompt) -->
+      <div class="w-full">
+        <!-- Part of the options container -->
+        <p class="text-slate-600 text-xs sm:text-sm font-medium text-center mb-4">
+          Please select your role to continue:
+        </p>
+
+        <div class="space-y-4">
+          <!-- Role 1: Visiting Delegate -->
+          <button id="btn-select-delegate" type="button" class="w-full p-4 sm:p-5 rounded-2xl border-2 border-brand-900/30 bg-white hover:bg-brand-50/50 hover:border-brand-900 text-left transition-all duration-200 shadow-sm hover:shadow-md group focus:outline-none focus:ring-2 focus:ring-brand-900 focus:ring-offset-2">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-xl bg-brand-900 text-amber-400 flex items-center justify-center font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+                  <i data-lucide="plane-takeoff" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-900 transition-colors">
+                    I am a Visiting Delegate
+                  </h3>
+                  <p class="text-xs sm:text-sm text-slate-600">
+                    Access your schedule as a delegate.
+                  </p>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-brand-900 group-hover:translate-x-1 transition-all"></i>
+            </div>
+          </button>
+
+          <!-- Role 2: Congregation Volunteer -->
+          <button id="btn-select-volunteer" type="button" class="w-full p-4 sm:p-5 rounded-2xl border-2 border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-left transition-all duration-200 shadow-sm hover:shadow-md group focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xl shadow-sm group-hover:scale-105 transition-transform">
+                  <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-base sm:text-lg font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
+                    I am a Volunteer
+                  </h3>
+                  <p class="text-xs sm:text-sm text-slate-500">
+                    Access your schedule as a volunteer.
+                  </p>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-1 transition-all"></i>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       Delegate Passcode Modal
+       ========================================================================= -->
+  <div id="delegate-passcode-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in" aria-modal="true" role="dialog" aria-labelledby="modal-title">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
+      
+      <!-- Close button -->
+      <button id="close-delegate-modal" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors" aria-label="Close modal">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-brand-50 text-brand-900 flex items-center justify-center mb-3">
+          <i data-lucide="key-round" class="w-6 h-6"></i>
+        </div>
+        <h2 id="modal-title" class="text-xl font-bold text-slate-900">
+          Enter Group Passcode
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Please enter the code provided to your delegate group.
+        </p>
+      </div>
+
+      <!-- Passcode Form -->
+      <form id="passcode-form" class="space-y-4">
+        <div>
+          <label for="passcode-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Group Code
+          </label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="passcode-input" 
+              name="passcode"
+              class="w-full px-4 py-3 text-center tracking-widest font-mono font-bold text-base sm:text-lg uppercase rounded-xl border border-slate-300 focus:border-brand-900 focus:ring-2 focus:ring-brand-900/20 focus:outline-none transition-all placeholder:text-slate-300"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              required
+            >
+          </div>
+          <!-- Error alert area -->
+          <div id="passcode-error" class="hidden mt-2 text-xs text-rose-600 font-semibold flex items-center justify-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span>Incorrect code. Please check your assigned code.</span>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          id="btn-verify-passcode"
+          class="w-full py-3.5 px-5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-offset-2 focus:ring-brand-900"
+        >
+          <span>Continue to Portal</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <!-- Friendly Help -->
+      <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+        <span class="text-[11px] text-slate-400">
+          Need assistance? Ask the congregation contact person.
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Volunteer Auth Modal
+       ========================================================================= -->
+  <div id="volunteer-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in" aria-modal="true" role="dialog" aria-labelledby="volunteer-modal-title">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
+      
+      <!-- Close button -->
+      <button id="close-volunteer-modal" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors" aria-label="Close modal">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-3">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <h2 id="volunteer-modal-title" class="text-xl font-bold text-slate-900">
+          Volunteer Portal Access
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Select your name and enter the volunteer passcode.
+        </p>
+      </div>
+
+      <!-- Volunteer Auth Form -->
+      <form id="volunteer-form" class="space-y-4">
+        <!-- Field 1: Volunteer Name Selection -->
+        <div>
+          <label for="volunteer-name-select" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Select Your Name
+          </label>
+          <div class="relative">
+            <select 
+              id="volunteer-name-select" 
+              name="volunteer_name"
+              class="w-full px-4 py-3 bg-white text-slate-800 font-medium text-sm sm:text-base rounded-xl border border-slate-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all appearance-none cursor-pointer"
+              required
+            >
+              <option value="">-- Choose your name --</option>
+              <option value="Aija Mae Pormilos">Aija Mae Pormilos</option>
+              <option value="Amiel Joshua Zoleta">Amiel Joshua Zoleta</option>
+              <option value="Ann Mariel Zoleta">Ann Mariel Zoleta</option>
+              <option value="Arlene Enriquez">Arlene Enriquez</option>
+              <option value="Arnold Cabrales Sr.">Arnold Cabrales Sr.</option>
+              <option value="Arnulfo Sebastian">Arnulfo Sebastian</option>
+              <option value="Bethzaida Francisco">Bethzaida Francisco</option>
+              <option value="Cathlyn Berba">Cathlyn Berba</option>
+              <option value="Ellyza Andrea Sebastian">Ellyza Andrea Sebastian</option>
+              <option value="Francis Francisco">Francis Francisco</option>
+              <option value="Hollie Berba">Hollie Berba</option>
+              <option value="Howell Dela Cruz">Howell Dela Cruz</option>
+              <option value="Huward Berba">Huward Berba</option>
+              <option value="Jeremy Barte">Jeremy Barte</option>
+              <option value="John Michael Sta. Cruz">John Michael Sta. Cruz</option>
+              <option value="Julie Ann Aguilar">Julie Ann Aguilar</option>
+              <option value="Lira Zoleta">Lira Zoleta</option>
+              <option value="Lizel Sebastian">Lizel Sebastian</option>
+              <option value="Lorinda Soco">Lorinda Soco</option>
+              <option value="Lydia Aguilar">Lydia Aguilar</option>
+              <option value="Malou Dela Cruz">Malou Dela Cruz</option>
+              <option value="Milca Joyce Francisco">Milca Joyce Francisco</option>
+              <option value="Noemi Zoleta">Noemi Zoleta</option>
+              <option value="Pierre Paulo Sebastian">Pierre Paulo Sebastian</option>
+              <option value="Samuel Barte">Samuel Barte</option>
+              <option value="Vanessa Maclang">Vanessa Maclang</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Field 2: Passcode Input -->
+        <div>
+          <label for="volunteer-passcode-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Volunteer Passcode
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="volunteer-passcode-input" 
+              name="volunteer_passcode"
+              placeholder="Enter volunteer passcode"
+              class="w-full px-4 py-3 text-center tracking-widest font-mono font-bold text-base sm:text-lg rounded-xl border border-slate-300 focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all placeholder:text-slate-400 placeholder:tracking-normal placeholder:font-sans placeholder:font-normal"
+              autocomplete="current-password"
+              spellcheck="false"
+              required
+            >
+          </div>
+          <!-- Error alert area -->
+          <div id="volunteer-passcode-error" class="hidden mt-2 text-xs text-rose-600 font-semibold flex items-center justify-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span id="volunteer-error-text">Incorrect passcode. Please check with your coordinator.</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          id="btn-verify-volunteer"
+          class="w-full py-3.5 px-5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-offset-2 focus:ring-amber-600"
+        >
+          <span>View My Schedule</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <!-- Friendly Help -->
+      <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+        <span class="text-[11px] text-slate-400">
+          Assigned volunteers only · Contact your department lead if you need help
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 text-xs text-slate-500">
+    <p>© 2026 Local for a Day · Philippines 2026 International Convention</p>
+  </footer>
+
+  <script src="assets/js/volunteer-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Re-initialize Lucide icons for dynamically added modal
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      const delegateBtn = document.getElementById('btn-select-delegate');
+      const volunteerBtn = document.getElementById('btn-select-volunteer');
+      const delegateModal = document.getElementById('delegate-passcode-modal');
+      const volunteerModal = document.getElementById('volunteer-modal');
+      const closeDelegateModal = document.getElementById('close-delegate-modal');
+      const closeVolunteerModal = document.getElementById('close-volunteer-modal');
+      
+      const passcodeInput = document.getElementById('passcode-input');
+      const passcodeForm = document.getElementById('passcode-form');
+      const passcodeError = document.getElementById('passcode-error');
+
+      const volunteerForm = document.getElementById('volunteer-form');
+      const volunteerNameSelect = document.getElementById('volunteer-name-select');
+      const volunteerPasscodeInput = document.getElementById('volunteer-passcode-input');
+      const volunteerPasscodeError = document.getElementById('volunteer-passcode-error');
+      const volunteerErrorText = document.getElementById('volunteer-error-text');
+      const btnVerifyVolunteer = document.getElementById('btn-verify-volunteer');
+
+      // Check URL parameters for forced authentication modal triggers
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('need_auth')) {
+        delegateModal.classList.remove('hidden');
+        setTimeout(() => passcodeInput.focus(), 150);
+      } else if (urlParams.get('need_volunteer_auth')) {
+        volunteerModal.classList.remove('hidden');
+        setTimeout(() => volunteerNameSelect.focus(), 150);
+      }
+
+      // Delegate Button Click
+      delegateBtn.addEventListener('click', () => {
+        passcodeError.classList.add('hidden');
+        delegateModal.classList.remove('hidden');
+        setTimeout(() => passcodeInput.focus(), 150);
+      });
+
+      // Volunteer Button Click
+      volunteerBtn.addEventListener('click', () => {
+        volunteerPasscodeError.classList.add('hidden');
+        volunteerModal.classList.remove('hidden');
+        setTimeout(() => volunteerNameSelect.focus(), 150);
+      });
+
+      // Modal Dismissals
+      closeDelegateModal.addEventListener('click', () => {
+        delegateModal.classList.add('hidden');
+      });
+
+      closeVolunteerModal.addEventListener('click', () => {
+        volunteerModal.classList.add('hidden');
+      });
+
+      // Close on background click
+      delegateModal.addEventListener('click', (e) => {
+        if (e.target === delegateModal) delegateModal.classList.add('hidden');
+      });
+
+      volunteerModal.addEventListener('click', (e) => {
+        if (e.target === volunteerModal) volunteerModal.classList.add('hidden');
+      });
+
+      // Escape key dismissal
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          delegateModal.classList.add('hidden');
+          volunteerModal.classList.add('hidden');
+        }
+      });
+
+      // Delegate Passcode submission & verification
+      passcodeForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entered = passcodeInput.value.trim().toUpperCase();
+
+        if (verifyPasscode(entered)) {
+          passcodeError.classList.add('hidden');
+          sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+          
+          const submitBtn = document.getElementById('btn-verify-passcode');
+          submitBtn.innerHTML = `<span>Welcome! Entering...</span>`;
+          submitBtn.classList.remove('bg-brand-900');
+          submitBtn.classList.add('bg-emerald-600');
+
+          setTimeout(() => {
+            window.location.href = 'delegate.html';
+          }, 350);
+        } else {
+          passcodeError.classList.remove('hidden');
+          passcodeInput.classList.add('border-rose-500', 'bg-rose-50');
+          passcodeInput.focus();
+          passcodeInput.select();
+        }
+      });
+
+      passcodeInput.addEventListener('input', () => {
+        passcodeError.classList.add('hidden');
+        passcodeInput.classList.remove('border-rose-500', 'bg-rose-50');
+      });
+
+      // Volunteer Form submission & verification
+      volunteerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const selectedName = volunteerNameSelect.value.trim();
+        const enteredPasscode = volunteerPasscodeInput.value.trim();
+
+        // 1. Validate Name selection
+        if (!selectedName) {
+          volunteerErrorText.textContent = 'Please select your name from the list.';
+          volunteerPasscodeError.classList.remove('hidden');
+          volunteerNameSelect.classList.add('border-rose-500', 'bg-rose-50');
+          volunteerNameSelect.focus();
+          return;
+        }
+
+        // 2. Validate Passcode (ic2026-lfd-smcv)
+        const isPasscodeValid = typeof VolunteerService !== 'undefined' 
+          ? VolunteerService.verifyPasscode(enteredPasscode) 
+          : (enteredPasscode.toLowerCase() === 'ic2026-lfd-smcv');
+
+        if (isPasscodeValid) {
+          volunteerPasscodeError.classList.add('hidden');
+          
+          if (typeof VolunteerService !== 'undefined') {
+            VolunteerService.setCurrentVolunteer(selectedName);
+          } else {
+            sessionStorage.setItem('lfd_v2_auth_volunteer', 'true');
+            sessionStorage.setItem('lfd_v2_volunteer_name', selectedName);
+          }
+
+          // UI feedback
+          btnVerifyVolunteer.innerHTML = `<span>Welcome, ${selectedName.split(' ')[0]}! Opening...</span>`;
+          btnVerifyVolunteer.classList.remove('bg-amber-600', 'hover:bg-amber-700');
+          btnVerifyVolunteer.classList.add('bg-emerald-600');
+
+          setTimeout(() => {
+            window.location.href = 'volunteer.html';
+          }, 350);
+        } else {
+          volunteerErrorText.textContent = 'Incorrect passcode. Please check with your coordinator.';
+          volunteerPasscodeError.classList.remove('hidden');
+          volunteerPasscodeInput.classList.add('border-rose-500', 'bg-rose-50');
+          volunteerPasscodeInput.focus();
+          volunteerPasscodeInput.select();
+        }
+      });
+
+      volunteerNameSelect.addEventListener('change', () => {
+        volunteerPasscodeError.classList.add('hidden');
+        volunteerNameSelect.classList.remove('border-rose-500', 'bg-rose-50');
+      });
+
+      volunteerPasscodeInput.addEventListener('input', () => {
+        volunteerPasscodeError.classList.add('hidden');
+        volunteerPasscodeInput.classList.remove('border-rose-500', 'bg-rose-50');
+      });
+    });
+  </script>
+</body>
+</html>

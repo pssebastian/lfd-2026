@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Local for a Day — Volunteer Portal for San Miguel Congregation, 2026 International Convention.">
+  <meta name="theme-color" content="#041412">
+  <title>Volunteer Portal | Local for a Day 2026</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#0e4d45',
+              950: '#051a17',
+            },
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            script: ['"Dancing Script"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Local html2canvas & Base64 Logo Assets (100% Reliable Offline & No Canvas Taint) -->
+  <script src="assets/js/html2canvas.min.js"></script>
+  <script src="assets/js/logo-data.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* =========================================================================
+       Screen Styles
+       ========================================================================= */
+    #printable-slip {
+      display: none !important;
+    }
+
+    /* Floating Toast Notification (Based on Test/index.html reference) */
+    .toast-notification {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast-notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================================================================
+       Print Styles (Ensures 100% Reliable Compact Pocket Slip Output)
+       ========================================================================= */
+    @media print {
+      @page {
+        size: portrait;
+        margin: 8mm auto;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html, body {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        min-height: 0 !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif !important;
+      }
+
+      /* Hide screen elements during print */
+      header,
+      footer,
+      #offline-banner,
+      #main-screen-content,
+      .toast-notification,
+      .no-print {
+        display: none !important;
+      }
+
+      /* Render ONLY the compact slip */
+      #printable-slip {
+        display: block !important;
+        visibility: visible !important;
+        width: 100% !important;
+        max-width: 410px !important;
+        margin: 10px auto !important;
+        padding: 18px 20px !important;
+        border: 2px solid #0f172a !important;
+        border-radius: 16px !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .slip-card-role,
+      .slip-card-activity {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#FAF9F5] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900">
+
+  <!-- Offline Status Toast Notification -->
+  <div id="offline-banner" class="hidden sticky top-0 z-50 bg-amber-600 text-white text-xs font-semibold px-4 py-2 text-center flex items-center justify-center gap-2 shadow-md no-print">
+    <i data-lucide="wifi-off" class="w-4 h-4"></i>
+    <span>You are currently browsing offline. Your assigned activities and responsibilities remain fully available.</span>
+  </div>
+
+  <!-- =========================================================================
+       Sticky Navigation Bar
+       ========================================================================= -->
+  <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 transition-all no-print">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Logo & Congregation -->
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 touch-target" title="Back to Welcome Page">
+        <img src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="2026 International Convention" class="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-sm">
+        <div>
+          <span class="font-bold text-slate-900 text-xs sm:text-sm leading-tight block">LOCAL FOR A DAY</span>
+          <span class="text-[10px] sm:text-[11px] font-semibold text-brand-900 uppercase tracking-wider block">Local Volunteers</span>
+        </div>
+      </a>
+
+      <!-- Right Nav Actions: Save Image, Print (PDF), Home (Logout) -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <!-- Save Slip as Image Action (Direct Download / Share) -->
+        <button 
+          id="btn-header-save-image" 
+          type="button"
+          onclick="exportVolunteerSlipImage()"
+          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
+          title="Save Slip as Image (PNG)"
+        >
+          <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
+          <span>Save Image</span>
+        </button>
+
+        <!-- Print Slip as PDF Action -->
+        <button 
+          id="btn-header-print" 
+          type="button"
+          onclick="window.print()"
+          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors"
+          title="Print Slip or Save as PDF"
+        >
+          <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
+          <span class="hidden sm:inline">Print (PDF)</span>
+        </button>
+
+        <!-- Home / Logout Action -->
+        <button 
+          id="home-logout-btn" 
+          type="button"
+          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center gap-1.5 transition-colors"
+          title="Return Home & Logout"
+        >
+          <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
+          <span>Home</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       Main Content Container (Screen View)
+       ========================================================================= -->
+  <main id="main-screen-content" class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 no-print">
+    
+    <!-- Hero / Volunteer Identity (Seamless, Page Background, Sans Font) -->
+    <section class="pt-2 sm:pt-4 pb-2">
+      <h1 id="volunteer-name" class="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+        Loading Volunteer...
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium">
+        San Miguel Congregation · Local for a Day Volunteer Roster
+      </p>
+    </section>
+
+    <!-- Section 1: Your Assigned Roles -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-900 flex items-center justify-center">
+            <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900">
+              Your Assigned Roles
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Key instructions and primary duties for your assigned role(s).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsibilities Cards List (Rendered as Paragraphs) -->
+      <div id="volunteer-responsibilities-list" class="grid grid-cols-1 gap-3.5">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- Section 2: Personalized Activity Timeline -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+            <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900">
+              Your Activity Timeline
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Chronological schedule of your activities with partner notes and reminders.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Container -->
+      <div id="volunteer-timeline" class="space-y-3 sm:space-y-4 relative">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       Footer (Screen View, No buttons)
+       ========================================================================= -->
+  <footer class="w-full border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 no-print">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <p>© 2026 Local for a Day · San Miguel Congregation · Philippines 2026 International Convention</p>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       Dedicated Compact Printable Slip Container (Visible ONLY in Print / PDF & Image Capture)
+       Starts directly with logo, no scissors, no tracing lines, clean compact card
+       ========================================================================= -->
+  <div id="printable-slip">
+    <!-- 1. Header with Logo (Starts directly with logo, no tracing lines or elements above) -->
+    <div class="flex items-center gap-3 pb-3 border-b border-slate-200">
+      <img class="slip-logo-img w-11 h-11 object-contain" src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="Convention Logo">
+      <div class="flex-1 min-w-0">
+        <div class="text-[9px] font-bold text-emerald-900 uppercase tracking-wider">San Miguel Congregation</div>
+        <div class="text-xs font-black text-slate-950 tracking-tight leading-tight">LOCAL FOR A DAY · 2026</div>
+      </div>
+    </div>
+
+    <!-- 2. Volunteer Name (font-sans font-extrabold text-slate-950) -->
+    <div class="pt-3 pb-2.5">
+      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Assigned Volunteer</div>
+      <div id="print-slip-volunteer-name" class="font-sans text-xl font-extrabold text-slate-950 tracking-tight leading-snug mt-0.5">
+        Loading...
+      </div>
+    </div>
+
+    <!-- 3. Assigned Roles & Duties (Continuous Paragraphs) -->
+    <div class="pb-3 border-b border-slate-200">
+      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Your Assigned Roles & Duties</div>
+      <div id="print-slip-roles-container" class="space-y-2">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+    <!-- 4. Scheduled Activities Table -->
+    <div class="pt-3">
+      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">Schedule Timeline</div>
+      <div id="print-slip-activities-container" class="space-y-1.5">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+    <!-- 5. Card Footer -->
+    <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-600">
+      <div>
+        <span class="font-bold text-slate-800">Lead Contacts:</span> Bro. Paulo · Bro. Francis
+      </div>
+      <div class="font-bold text-emerald-950">
+        Hagonoy, Bulacan
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notification -->
+  <div id="toastNotification" class="toast-notification"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/volunteer-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    // Global references
+    let currentVolunteer = null;
+
+    // Toast Notification Utility (direct from Test/index.html reference)
+    function showToast(msg, duration = 3000) {
+      const toast = document.getElementById("toastNotification");
+      if (!toast) return;
+      toast.innerHTML = msg;
+      toast.classList.add("show");
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => {
+        toast.classList.remove("show");
+      }, duration);
+    }
+
+    // High-Resolution Slip Canvas Generator (Fixed-Width Offscreen Clone from Test/index.html reference)
+    async function generateVolunteerSlipCanvas() {
+      if (typeof html2canvas === 'undefined') {
+        throw new Error("Image rendering engine is still loading. Please try again in 2 seconds.");
+      }
+
+      const source = document.getElementById("printable-slip");
+      if (!source) throw new Error("Printable slip element not found.");
+
+      showToast("⏳ Rendering high-resolution slip image...");
+
+      // Clone element into off-screen container with fixed width (400px) to prevent mobile squishing
+      const clone = source.cloneNode(true);
+      clone.id = "printableSlipClone";
+      clone.style.width = "400px";
+      clone.style.maxWidth = "400px";
+      clone.style.minWidth = "400px";
+      clone.style.padding = "18px 20px";
+      clone.style.margin = "0";
+      clone.style.background = "#ffffff";
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      clone.style.top = "0";
+      clone.style.boxSizing = "border-box";
+      clone.style.display = "block";
+      clone.style.border = "2px solid #0f172a";
+      clone.style.borderRadius = "16px";
+
+      // Ensure the cloned logo uses the inline Base64 data URI to prevent file:// / CORS canvas taint
+      const img = clone.querySelector('img');
+      if (img && typeof CONVENTION_LOGO_BASE64 !== 'undefined') {
+        img.src = CONVENTION_LOGO_BASE64;
+      }
+
+      document.body.appendChild(clone);
+
+      try {
+        if (img && !img.complete) {
+          await new Promise(resolve => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        }
+
+        const canvas = await html2canvas(clone, {
+          scale: 2.5, // Ultra-sharp 2.5x resolution
+          backgroundColor: "#ffffff",
+          useCORS: true,
+          logging: false,
+          windowWidth: 1024
+        });
+        return canvas;
+      } finally {
+        if (clone.parentNode) {
+          clone.parentNode.removeChild(clone);
+        }
+      }
+    }
+
+    // Direct Image Download (Save Image PNG)
+    async function exportVolunteerSlipImage() {
+      try {
+        const canvas = await generateVolunteerSlipCanvas();
+        const dataUrl = canvas.toDataURL("image/png");
+        const safeName = (currentVolunteer && currentVolunteer.name ? currentVolunteer.name : 'Volunteer').replace(/[^a-zA-Z0-9]/g, '_');
+        const filename = `Volunteer_Slip_${safeName}_2026.png`;
+        
+        const link = document.createElement("a");
+        link.download = filename;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          if (link.parentNode) link.parentNode.removeChild(link);
+        }, 600);
+        showToast("✅ Image saved successfully as PNG!");
+      } catch (err) {
+        console.error("Export image error:", err);
+        showToast("⚠️ Could not export image: " + err.message);
+      }
+    }
+
+    // Native Web Share API (Share Image & Direct Save to Photos on iPhone/Android)
+    async function shareVolunteerSlipImage() {
+      try {
+        const canvas = await generateVolunteerSlipCanvas();
+
+        if (canvas.toBlob) {
+          canvas.toBlob(async (blob) => {
+            if (!blob) {
+              showToast("⚠️ Failed to generate image file.");
+              return;
+            }
+
+            const safeName = (currentVolunteer && currentVolunteer.name ? currentVolunteer.name : 'Volunteer').replace(/[^a-zA-Z0-9]/g, '_');
+            const filename = `Volunteer_Slip_${safeName}_2026.png`;
+            const file = new File([blob], filename, { type: "image/png" });
+
+            // Check if Web Share API supports file sharing (iOS Safari, Android Chrome, Edge)
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({
+                  title: `Volunteer Slip - ${currentVolunteer ? currentVolunteer.name : 'Volunteer'}`,
+                  text: `Local for a Day 2026 - Duty Slip for ${currentVolunteer ? currentVolunteer.name : 'Volunteer'}`,
+                  files: [file]
+                });
+                showToast("✅ Schedule image shared successfully!");
+                return;
+              } catch (shareErr) {
+                if (shareErr.name === "AbortError") {
+                  return; // User canceled share sheet
+                }
+                console.warn("Native share failed, falling back to download:", shareErr);
+              }
+            }
+
+            // Fallback for browsers without file share capability
+            const dataUrl = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.download = filename;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => {
+              if (link.parentNode) link.parentNode.removeChild(link);
+            }, 600);
+            showToast("📥 Direct share not supported on this device — image downloaded instead!");
+          }, "image/png");
+        } else {
+          exportVolunteerSlipImage();
+        }
+      } catch (err) {
+        console.error("Share image error:", err);
+        showToast("⚠️ Could not share image: " + err.message);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Auth Guard
+      const isAuth = sessionStorage.getItem('lfd_v2_auth_volunteer');
+      const currentVolunteerName = sessionStorage.getItem('lfd_v2_volunteer_name');
+
+      if (!isAuth || !currentVolunteerName) {
+        window.location.replace('index.html?need_volunteer_auth=true');
+        return;
+      }
+
+      // 2. Fetch Volunteer Data
+      const volunteer = typeof VolunteerService !== 'undefined'
+        ? VolunteerService.getVolunteerByName(currentVolunteerName)
+        : (typeof VOLUNTEERS_LIST !== 'undefined' ? VOLUNTEERS_LIST.find(v => v.name.toLowerCase() === currentVolunteerName.toLowerCase()) : null);
+
+      if (!volunteer) {
+        alert('Volunteer record not found. Returning to login.');
+        sessionStorage.removeItem('lfd_v2_volunteer_name');
+        window.location.replace('index.html?need_volunteer_auth=true');
+        return;
+      }
+      currentVolunteer = volunteer;
+
+      // 3. Set Base64 Logo on All Slip Images (Guarantees zero canvas taint offline & on file://)
+      if (typeof CONVENTION_LOGO_BASE64 !== 'undefined') {
+        document.querySelectorAll('.slip-logo-img').forEach(img => {
+          img.src = CONVENTION_LOGO_BASE64;
+        });
+      }
+
+      // 4. Render Volunteer Identity & Hero
+      document.getElementById('volunteer-name').textContent = volunteer.name;
+      
+      const printSlipNameEl = document.getElementById('print-slip-volunteer-name');
+      if (printSlipNameEl) printSlipNameEl.textContent = volunteer.name;
+
+      document.title = `${volunteer.name} | Volunteer Slip 2026`;
+
+      // 5. Render Assigned Roles (Paragraph format for Screen and Print/Image Slip)
+      const respContainer = document.getElementById('volunteer-responsibilities-list');
+      const printSlipRolesContainer = document.getElementById('print-slip-roles-container');
+
+      respContainer.innerHTML = '';
+      if (printSlipRolesContainer) printSlipRolesContainer.innerHTML = '';
+
+      if (volunteer.roles.length === 0) {
+        const noRolesText = `
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 text-slate-500 text-sm">
+            Please coordinate directly with the Host Group Lead for your duty details.
+          </div>
+        `;
+        respContainer.innerHTML = noRolesText;
+        if (printSlipRolesContainer) {
+          printSlipRolesContainer.innerHTML = `<div class="text-[11px] text-slate-500 italic">Please coordinate directly with the Host Group Lead.</div>`;
+        }
+      } else {
+        volunteer.roles.forEach(roleObj => {
+          const rawText = roleObj.responsibilities || 'Mag-coordinate sa department overseer para sa karagdagang tagubilin.';
+
+          // Screen View Card (Paragraph format)
+          const card = document.createElement('div');
+          card.className = 'bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs hover:border-slate-300 transition-all';
+          card.innerHTML = `
+            <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100">
+              <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-mono font-bold text-xs">
+                ${roleObj.code}
+              </span>
+              <h3 class="font-bold text-slate-900 text-sm sm:text-base">
+                ${roleObj.title}
+              </h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              ${rawText}
+            </p>
+          `;
+          respContainer.appendChild(card);
+
+          // Dedicated Print Slip Card (Solid clean styling, no tracing lines)
+          if (printSlipRolesContainer) {
+            const printRoleItem = document.createElement('div');
+            printRoleItem.className = 'slip-card-role p-2 rounded-lg bg-slate-50 border border-slate-200/90 text-[10.5px]';
+            printRoleItem.innerHTML = `
+              <div class="font-bold text-slate-900 text-xs flex items-center gap-1.5 mb-0.5">
+                <span class="font-mono text-emerald-900 font-bold">${roleObj.code}</span>
+                <span class="text-slate-400">·</span>
+                <span>${roleObj.title}</span>
+              </div>
+              <p class="text-slate-700 font-normal leading-relaxed m-0">${rawText}</p>
+            `;
+            printSlipRolesContainer.appendChild(printRoleItem);
+          }
+        });
+      }
+
+      // 6. Render Personalized Activity Timeline (Screen and Print/Image Slip)
+      const timelineContainer = document.getElementById('volunteer-timeline');
+      const printSlipActivitiesContainer = document.getElementById('print-slip-activities-container');
+
+      timelineContainer.innerHTML = '';
+      if (printSlipActivitiesContainer) printSlipActivitiesContainer.innerHTML = '';
+
+      if (volunteer.activities && volunteer.activities.length > 0) {
+        volunteer.activities.forEach((act, idx) => {
+          const timeDisplay = act.time ? act.time : 'Scheduled Activity';
+
+          // Screen Item Card
+          const itemCard = document.createElement('div');
+          itemCard.className = 'bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs relative';
+
+          let notesBlock = '';
+          if (act.notes) {
+            notesBlock = `
+              <div class="mt-3 p-3 rounded-xl bg-amber-50/80 border border-amber-200/70 text-amber-950 text-xs sm:text-sm flex items-start gap-2.5">
+                <i data-lucide="users" class="w-4 h-4 text-amber-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <span class="font-bold text-amber-900">Your Assignment Note: </span>
+                  <span>${act.notes}</span>
+                </div>
+              </div>
+            `;
+          }
+
+          let remindersBlock = '';
+          if (act.reminders) {
+            remindersBlock = `
+              <div class="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm flex items-start gap-2.5">
+                <i data-lucide="info" class="w-4 h-4 text-brand-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <span class="font-bold text-slate-900">Briefing / Location: </span>
+                  <span>${act.reminders}</span>
+                </div>
+              </div>
+            `;
+          }
+
+          itemCard.innerHTML = `
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-amber-100 text-amber-900 shrink-0">
+                  <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                </span>
+                <span class="font-bold text-emerald-950 text-xs tracking-tight">
+                  ${timeDisplay}
+                </span>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-400">
+                Activity #${idx + 1}
+              </span>
+            </div>
+
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mt-1">
+              ${act.activity}
+            </h3>
+
+            ${notesBlock}
+            ${remindersBlock}
+          `;
+          timelineContainer.appendChild(itemCard);
+
+          // Dedicated Print Slip Row (Compact, Clean, Solid Border)
+          if (printSlipActivitiesContainer) {
+            const printRow = document.createElement('div');
+            printRow.className = 'slip-card-activity p-2 rounded-lg bg-slate-50 border border-slate-200/90 text-[10.5px]';
+            printRow.innerHTML = `
+              <div class="flex items-start gap-2">
+                <div class="font-mono font-bold text-emerald-950 shrink-0 w-24 text-[10px] pt-0.5">
+                  ${timeDisplay}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-slate-900 text-[11px] leading-tight">${act.activity}</div>
+                  ${act.notes ? `<div class="text-[10px] text-amber-900 font-semibold mt-0.5">Note: ${act.notes}</div>` : ''}
+                  ${act.reminders ? `<div class="text-[9.5px] text-slate-500 italic mt-0.5">${act.reminders}</div>` : ''}
+                </div>
+              </div>
+            `;
+            printSlipActivitiesContainer.appendChild(printRow);
+          }
+        });
+      } else {
+        // Fallback for Lead Coordinator or continuous role
+        const allDayCard = document.createElement('div');
+        allDayCard.className = 'bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-xs';
+        allDayCard.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-mono font-bold text-xs mb-1.5">
+                All-Day Assignment
+              </div>
+              <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                Continuous Coordination & Support
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                As part of your assigned responsibilities (${volunteer.rawRoles.join(', ')}), your duties span throughout the day from morning delegate welcome to evening farewell.
+              </p>
+              <div class="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-700">
+                <p class="font-semibold text-slate-900 mb-1">Recommended Action:</p>
+                <p>Please review your assigned roles and duties above, and coordinate with your department lead throughout the day.</p>
+              </div>
+            </div>
+          </div>
+        `;
+        timelineContainer.appendChild(allDayCard);
+
+        const allDaySlipHtml = `
+          <div class="slip-card-activity p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
+            <div class="font-bold text-slate-900 text-xs">All-Day Assignment & Department Coordination</div>
+            <p class="text-[10.5px] text-slate-600 mt-1 leading-relaxed m-0">
+              Continuous coordination throughout the program from 7:15 AM Okada departure to 9:00 PM return.
+            </p>
+          </div>
+        `;
+        if (printSlipActivitiesContainer) printSlipActivitiesContainer.innerHTML = allDaySlipHtml;
+      }
+
+      // 7. Home / Logout Action
+      const homeLogoutBtn = document.getElementById('home-logout-btn');
+      if (homeLogoutBtn) {
+        homeLogoutBtn.addEventListener('click', () => {
+          if (typeof VolunteerService !== 'undefined') {
+            VolunteerService.logout();
+          } else {
+            sessionStorage.removeItem('lfd_v2_auth_volunteer');
+            sessionStorage.removeItem('lfd_v2_volunteer_name');
+          }
+          window.location.href = 'index.html';
+        });
+      }
+
+      // 8. Re-initialize Lucide Icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
