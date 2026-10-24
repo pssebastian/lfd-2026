@@ -648,13 +648,58 @@ function showToast(message) {
 }
 
 /* ==========================================================================
-   Authentication & Gateway Protection
+   Authentication & Gateway Protection (3-Day Remember Option)
    ========================================================================== */
 
+const DELEGATE_AUTH_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 Days in milliseconds
+
 function checkDelegateAuth() {
-  const isAuth = sessionStorage.getItem('lfd_v2_auth_delegate');
-  return isAuth === 'true';
+  try {
+    const isAuth = localStorage.getItem('lfd_v2_auth_delegate') === 'true';
+    const expiryStr = localStorage.getItem('lfd_v2_auth_delegate_expiry');
+    if (isAuth && expiryStr) {
+      const expiry = parseInt(expiryStr, 10);
+      if (Date.now() < expiry) {
+        return true;
+      }
+      // Expired after 3 days: clean up
+      clearDelegateAuth();
+      return false;
+    }
+  } catch (e) {}
+
+  // Fallback to sessionStorage
+  try {
+    return sessionStorage.getItem('lfd_v2_auth_delegate') === 'true';
+  } catch (e) {
+    return false;
+  }
 }
+
+function setDelegateAuth() {
+  const expiry = Date.now() + DELEGATE_AUTH_TTL_MS;
+  try {
+    localStorage.setItem('lfd_v2_auth_delegate', 'true');
+    localStorage.setItem('lfd_v2_auth_delegate_expiry', expiry.toString());
+  } catch (e) {}
+  try {
+    sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+  } catch (e) {}
+}
+
+function clearDelegateAuth() {
+  try {
+    localStorage.removeItem('lfd_v2_auth_delegate');
+    localStorage.removeItem('lfd_v2_auth_delegate_expiry');
+  } catch (e) {}
+  try {
+    sessionStorage.removeItem('lfd_v2_auth_delegate');
+  } catch (e) {}
+}
+
+window.checkDelegateAuth = checkDelegateAuth;
+window.setDelegateAuth = setDelegateAuth;
+window.clearDelegateAuth = clearDelegateAuth;
 
 function verifyPasscode(inputCode) {
   if (!inputCode) return false;

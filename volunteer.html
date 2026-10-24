@@ -202,12 +202,13 @@
           <span>Print (PDF)</span>
         </button>
 
-        <!-- Home / Logout Action -->
+        <!-- Home Action -->
         <button 
           id="home-logout-btn" 
           type="button"
+          onclick="handleVolunteerHome()"
           class="w-32 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
-          title="Return Home & Logout"
+          title="Return to Welcome Page"
         >
           <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
           <span>Home</span>
@@ -227,8 +228,12 @@
       <h1 id="volunteer-name" class="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
         Loading Volunteer...
       </h1>
-      <p class="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium">
-        San Miguel Congregation · Local for a Day Volunteer Roster
+      <p class="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium flex items-center gap-2 flex-wrap">
+        <span>San Miguel Congregation · Local for a Day Volunteer Roster</span>
+        <span class="text-slate-300">·</span>
+        <button type="button" onclick="handleVolunteerLogout()" class="text-amber-700 hover:text-amber-800 font-semibold underline text-xs cursor-pointer">
+          Switch Volunteer
+        </button>
       </p>
     </section>
 
@@ -294,13 +299,13 @@
        ========================================================================= -->
   <nav id="mobile-bottom-bar" aria-label="Mobile Volunteer Actions" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 sm:hidden no-print shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[max(0.625rem,env(safe-area-inset-bottom))]">
     <div class="grid grid-cols-3 gap-2 max-w-md mx-auto w-full">
-      <!-- Home (Logout) Button -->
+      <!-- Home (Return to Welcome Page) Button -->
       <button 
         id="btn-mobile-home"
         type="button"
-        onclick="handleVolunteerLogout()"
+        onclick="handleVolunteerHome()"
         class="w-full py-2.5 px-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
-        title="Return Home & Logout"
+        title="Return to Welcome Page"
       >
         <i data-lucide="home" class="w-4 h-4 text-amber-700 shrink-0"></i>
         <span>Home</span>
@@ -541,9 +546,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Auth Guard
-      const isAuth = sessionStorage.getItem('lfd_v2_auth_volunteer');
-      const currentVolunteerName = sessionStorage.getItem('lfd_v2_volunteer_name');
+      // 1. Auth Guard (Supports 3-Day Remember Option via VolunteerService)
+      const isAuth = typeof VolunteerService !== 'undefined'
+        ? VolunteerService.isAuthenticated()
+        : sessionStorage.getItem('lfd_v2_auth_volunteer') === 'true';
+      const currentVolunteerName = typeof VolunteerService !== 'undefined'
+        ? VolunteerService.getCurrentVolunteerName()
+        : sessionStorage.getItem('lfd_v2_volunteer_name');
 
       if (!isAuth || !currentVolunteerName) {
         window.location.replace('index.html?need_volunteer_auth=true');
@@ -757,26 +766,34 @@
         if (printSlipActivitiesContainer) printSlipActivitiesContainer.innerHTML = allDaySlipHtml;
       }
 
-      // 7. Home / Logout Action
-      function handleVolunteerLogout() {
-        if (typeof VolunteerService !== 'undefined') {
-          VolunteerService.logout();
-        } else {
-          sessionStorage.removeItem('lfd_v2_auth_volunteer');
-          sessionStorage.removeItem('lfd_v2_volunteer_name');
-        }
+      // 7. Home & Switch Actions
+      function handleVolunteerHome() {
+        // Navigates to Welcome Portal while keeping 3-day passcode session active
         window.location.href = 'index.html';
+      }
+      window.handleVolunteerHome = handleVolunteerHome;
+
+      function handleVolunteerLogout() {
+        if (confirm("Do you want to switch or sign out of your volunteer schedule?")) {
+          if (typeof VolunteerService !== 'undefined') {
+            VolunteerService.logout();
+          } else {
+            sessionStorage.removeItem('lfd_v2_auth_volunteer');
+            sessionStorage.removeItem('lfd_v2_volunteer_name');
+          }
+          window.location.href = 'index.html?need_volunteer_auth=true';
+        }
       }
       window.handleVolunteerLogout = handleVolunteerLogout;
 
       const homeLogoutBtn = document.getElementById('home-logout-btn');
       if (homeLogoutBtn) {
-        homeLogoutBtn.addEventListener('click', handleVolunteerLogout);
+        homeLogoutBtn.addEventListener('click', handleVolunteerHome);
       }
 
       const mobileHomeBtn = document.getElementById('btn-mobile-home');
       if (mobileHomeBtn) {
-        mobileHomeBtn.addEventListener('click', handleVolunteerLogout);
+        mobileHomeBtn.addEventListener('click', handleVolunteerHome);
       }
 
       // 8. Re-initialize Lucide Icons

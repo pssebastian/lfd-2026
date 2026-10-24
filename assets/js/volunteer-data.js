@@ -1453,27 +1453,74 @@ const VolunteerService = {
     return VOLUNTEERS_LIST.find(v => v.name.toLowerCase() === cleanName) || null;
   },
 
+  AUTH_TTL_MS: 3 * 24 * 60 * 60 * 1000, // 3 Days in milliseconds
+
   verifyPasscode: function(code) {
     if (!code) return false;
     return code.trim().toLowerCase() === VOLUNTEER_CONFIG.passcode.toLowerCase();
   },
 
   isAuthenticated: function() {
-    return sessionStorage.getItem('lfd_v2_auth_volunteer') === 'true';
+    try {
+      const isAuth = localStorage.getItem('lfd_v2_auth_volunteer') === 'true';
+      const expiryStr = localStorage.getItem('lfd_v2_auth_volunteer_expiry');
+      const name = localStorage.getItem('lfd_v2_volunteer_name');
+      if (isAuth && name && expiryStr) {
+        const expiry = parseInt(expiryStr, 10);
+        if (Date.now() < expiry) {
+          return true;
+        }
+        // Expired after 3 days: clear
+        this.logout();
+        return false;
+      }
+    } catch (e) {}
+
+    // Fallback to sessionStorage
+    try {
+      return sessionStorage.getItem('lfd_v2_auth_volunteer') === 'true';
+    } catch (e) {
+      return false;
+    }
   },
 
   getCurrentVolunteerName: function() {
-    return sessionStorage.getItem('lfd_v2_volunteer_name') || '';
+    try {
+      if (this.isAuthenticated()) {
+        const localName = localStorage.getItem('lfd_v2_volunteer_name');
+        if (localName) return localName;
+      }
+    } catch (e) {}
+    try {
+      return sessionStorage.getItem('lfd_v2_volunteer_name') || '';
+    } catch (e) {
+      return '';
+    }
   },
 
   setCurrentVolunteer: function(name) {
-    sessionStorage.setItem('lfd_v2_auth_volunteer', 'true');
-    sessionStorage.setItem('lfd_v2_volunteer_name', name);
+    const expiry = Date.now() + this.AUTH_TTL_MS;
+    try {
+      localStorage.setItem('lfd_v2_auth_volunteer', 'true');
+      localStorage.setItem('lfd_v2_auth_volunteer_expiry', expiry.toString());
+      localStorage.setItem('lfd_v2_volunteer_name', name);
+    } catch (e) {}
+    try {
+      sessionStorage.setItem('lfd_v2_auth_volunteer', 'true');
+      sessionStorage.setItem('lfd_v2_volunteer_name', name);
+    } catch (e) {}
   },
 
   logout: function() {
-    sessionStorage.removeItem('lfd_v2_auth_volunteer');
-    sessionStorage.removeItem('lfd_v2_volunteer_name');
+    try {
+      localStorage.removeItem('lfd_v2_auth_volunteer');
+      localStorage.removeItem('lfd_v2_auth_volunteer_expiry');
+      localStorage.removeItem('lfd_v2_volunteer_name');
+    } catch (e) {}
+    try {
+      sessionStorage.removeItem('lfd_v2_auth_volunteer');
+      sessionStorage.removeItem('lfd_v2_volunteer_name');
+    } catch (e) {}
   }
 };
 

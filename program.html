@@ -323,9 +323,13 @@
           e.preventDefault();
           const entered = gateInput.value.trim().toUpperCase();
           if (verifyPasscode(entered)) {
-            sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+            if (typeof setDelegateAuth === 'function') {
+              setDelegateAuth();
+            } else {
+              sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+            }
             gateModal.classList.add('hidden');
-            showToast("Welcome! Program unlocked.");
+            showToast("Welcome! Program unlocked (3-day pass active).");
           } else {
             gateError.classList.remove('hidden');
             gateInput.classList.add('border-rose-500', 'bg-rose-50');

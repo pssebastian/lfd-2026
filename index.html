@@ -96,7 +96,7 @@
                   <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-brand-900 transition-colors">
                     I am a Visiting Delegate
                   </h3>
-                  <p class="text-xs sm:text-sm text-slate-600">
+                  <p id="delegate-status-text" class="text-xs sm:text-sm text-slate-600">
                     Access your schedule as a delegate.
                   </p>
                 </div>
@@ -116,7 +116,7 @@
                   <h3 class="text-base sm:text-lg font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
                     I am a Volunteer
                   </h3>
-                  <p class="text-xs sm:text-sm text-slate-500">
+                  <p id="volunteer-status-text" class="text-xs sm:text-sm text-slate-500">
                     Access your schedule as a volunteer.
                   </p>
                 </div>
@@ -347,6 +347,42 @@
       const volunteerErrorText = document.getElementById('volunteer-error-text');
       const btnVerifyVolunteer = document.getElementById('btn-verify-volunteer');
 
+      const delegateStatusText = document.getElementById('delegate-status-text');
+      const volunteerStatusText = document.getElementById('volunteer-status-text');
+
+      // Refresh Role Card Statuses (Active 3-Day Pass Indicators)
+      function updateAuthIndicators() {
+        if (typeof checkDelegateAuth === 'function' && checkDelegateAuth()) {
+          if (delegateStatusText) {
+            delegateStatusText.innerHTML = '<span class="text-emerald-700 font-semibold flex items-center gap-1 mt-0.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> Passcode active (3-day pass) · Tap to open</span>';
+          }
+        }
+        if (typeof VolunteerService !== 'undefined' && VolunteerService.isAuthenticated()) {
+          const vName = VolunteerService.getCurrentVolunteerName();
+          if (vName && volunteerStatusText) {
+            const firstName = vName.split(' ')[0];
+            volunteerStatusText.innerHTML = `<span class="text-amber-800 font-semibold flex items-center gap-1 mt-0.5 flex-wrap"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-700"></i> Active as ${firstName} · <span id="link-switch-vol" class="text-slate-500 hover:text-rose-600 underline font-normal cursor-pointer">Switch</span></span>`;
+            
+            const linkSwitch = document.getElementById('link-switch-vol');
+            if (linkSwitch) {
+              linkSwitch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                VolunteerService.logout();
+                volunteerPasscodeError.classList.add('hidden');
+                volunteerModal.classList.remove('hidden');
+                updateAuthIndicators();
+                setTimeout(() => volunteerNameSelect.focus(), 150);
+              });
+            }
+          }
+        }
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      }
+
+      updateAuthIndicators();
+
       // Check URL parameters for forced authentication modal triggers
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('need_auth')) {
@@ -357,15 +393,23 @@
         setTimeout(() => volunteerNameSelect.focus(), 150);
       }
 
-      // Delegate Button Click
+      // Delegate Button Click (Direct Entry if active within 3 days)
       delegateBtn.addEventListener('click', () => {
+        if (typeof checkDelegateAuth === 'function' && checkDelegateAuth()) {
+          window.location.href = 'delegate.html';
+          return;
+        }
         passcodeError.classList.add('hidden');
         delegateModal.classList.remove('hidden');
         setTimeout(() => passcodeInput.focus(), 150);
       });
 
-      // Volunteer Button Click
+      // Volunteer Button Click (Direct Entry if active within 3 days)
       volunteerBtn.addEventListener('click', () => {
+        if (typeof VolunteerService !== 'undefined' && VolunteerService.isAuthenticated() && VolunteerService.getCurrentVolunteerName()) {
+          window.location.href = 'volunteer.html';
+          return;
+        }
         volunteerPasscodeError.classList.add('hidden');
         volunteerModal.classList.remove('hidden');
         setTimeout(() => volunteerNameSelect.focus(), 150);
@@ -404,7 +448,11 @@
 
         if (verifyPasscode(entered)) {
           passcodeError.classList.add('hidden');
-          sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+          if (typeof setDelegateAuth === 'function') {
+            setDelegateAuth();
+          } else {
+            sessionStorage.setItem('lfd_v2_auth_delegate', 'true');
+          }
           
           const submitBtn = document.getElementById('btn-verify-passcode');
           submitBtn.innerHTML = `<span>Welcome! Entering...</span>`;
