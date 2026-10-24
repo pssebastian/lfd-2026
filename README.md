@@ -1,6 +1,12 @@
 # Local for a Day (Version 2) — San Miguel Congregation
 
+🌐 **Live Deployment**: [https://pssebastian.github.io/lfd-2026/](https://pssebastian.github.io/lfd-2026/)
+
 Mobile-first web companion designed for visiting international delegates participating in **"Local for a Day" (LFD)** during the **2026 International Convention** hosted by the **San Miguel & Mercado Congregations** in Hagonoy, Bulacan, Philippines.
+
+### Quick Access Credentials:
+- **Delegates Passcode**: `WYEYGLMLR4PX`
+- **Volunteers Passcode**: `ic2026-lfd-smcv` (select name from roster of 26 volunteers)
 
 ---
 
