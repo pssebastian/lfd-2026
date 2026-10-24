@@ -228,12 +228,8 @@
       <h1 id="volunteer-name" class="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
         Loading Volunteer...
       </h1>
-      <p class="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium flex items-center gap-2 flex-wrap">
-        <span>San Miguel Congregation · Local for a Day Volunteer Roster</span>
-        <span class="text-slate-300">·</span>
-        <button type="button" onclick="handleVolunteerLogout()" class="text-amber-700 hover:text-amber-800 font-semibold underline text-xs cursor-pointer">
-          Switch Volunteer
-        </button>
+      <p class="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium">
+        San Miguel Congregation · Local for a Day Volunteer Roster
       </p>
     </section>
 
@@ -766,25 +762,12 @@
         if (printSlipActivitiesContainer) printSlipActivitiesContainer.innerHTML = allDaySlipHtml;
       }
 
-      // 7. Home & Switch Actions
+      // 7. Home Action
       function handleVolunteerHome() {
         // Navigates to Welcome Portal while keeping 3-day passcode session active
         window.location.href = 'index.html';
       }
       window.handleVolunteerHome = handleVolunteerHome;
-
-      function handleVolunteerLogout() {
-        if (confirm("Do you want to switch or sign out of your volunteer schedule?")) {
-          if (typeof VolunteerService !== 'undefined') {
-            VolunteerService.logout();
-          } else {
-            sessionStorage.removeItem('lfd_v2_auth_volunteer');
-            sessionStorage.removeItem('lfd_v2_volunteer_name');
-          }
-          window.location.href = 'index.html?need_volunteer_auth=true';
-        }
-      }
-      window.handleVolunteerLogout = handleVolunteerLogout;
 
       const homeLogoutBtn = document.getElementById('home-logout-btn');
       if (homeLogoutBtn) {
