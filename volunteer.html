@@ -137,7 +137,7 @@
         margin: 10px auto !important;
         padding: 18px 20px !important;
         border: 2px solid #0f172a !important;
-        border-radius: 16px !important;
+        border-radius: 0 !important;
         background: #ffffff !important;
         box-shadow: none !important;
         box-sizing: border-box !important;
@@ -183,7 +183,7 @@
           id="btn-header-save-image" 
           type="button"
           onclick="exportVolunteerSlipImage()"
-          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
+          class="w-32 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
           title="Save Slip as Image (PNG)"
         >
           <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
@@ -195,18 +195,18 @@
           id="btn-header-print" 
           type="button"
           onclick="window.print()"
-          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors"
+          class="w-32 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
           title="Print Slip or Save as PDF"
         >
           <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
-          <span class="hidden sm:inline">Print (PDF)</span>
+          <span>Print (PDF)</span>
         </button>
 
         <!-- Home / Logout Action -->
         <button 
           id="home-logout-btn" 
           type="button"
-          class="px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center gap-1.5 transition-colors"
+          class="w-32 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
           title="Return Home & Logout"
         >
           <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
@@ -283,28 +283,26 @@
   </main>
 
   <!-- =========================================================================
-       Footer (Screen View, No buttons)
+       Footer (Screen View, Matching Welcome Page)
        ========================================================================= -->
-  <footer class="w-full border-t border-slate-200 bg-white py-6 mb-20 sm:mb-0 text-center text-xs text-slate-500 no-print">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <p>© 2026 Local for a Day · San Miguel Congregation · Philippines 2026 International Convention</p>
-    </div>
+  <footer class="text-center py-4 mb-20 sm:mb-0 text-xs text-slate-500 no-print">
+    <p>© 2026 Local for a Day · Philippines 2026 International Convention</p>
   </footer>
 
   <!-- =========================================================================
        Mobile Bottom Action Bar (Fixed at bottom edge of mobile viewport)
        ========================================================================= -->
   <nav id="mobile-bottom-bar" aria-label="Mobile Volunteer Actions" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 sm:hidden no-print shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[max(0.625rem,env(safe-area-inset-bottom))]">
-    <div class="flex items-center gap-2 max-w-md mx-auto">
+    <div class="grid grid-cols-3 gap-2 max-w-md mx-auto w-full">
       <!-- Home (Logout) Button -->
       <button 
         id="btn-mobile-home"
         type="button"
         onclick="handleVolunteerLogout()"
-        class="py-2.5 px-3.5 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors touch-target"
+        class="w-full py-2.5 px-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
         title="Return Home & Logout"
       >
-        <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
+        <i data-lucide="home" class="w-4 h-4 text-amber-700 shrink-0"></i>
         <span>Home</span>
       </button>
 
@@ -313,10 +311,10 @@
         id="btn-mobile-save-image"
         type="button"
         onclick="exportVolunteerSlipImage()"
-        class="flex-1 py-2.5 px-3 rounded-xl bg-brand-900 active:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all touch-target"
+        class="w-full py-2.5 px-2 rounded-xl bg-brand-900 active:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all touch-target whitespace-nowrap"
         title="Save Slip as Image (PNG)"
       >
-        <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
+        <i data-lucide="image" class="w-4 h-4 text-amber-300 shrink-0"></i>
         <span>Save Image</span>
       </button>
 
@@ -325,10 +323,10 @@
         id="btn-mobile-print"
         type="button"
         onclick="window.print()"
-        class="py-2.5 px-3.5 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors touch-target"
+        class="w-full py-2.5 px-2 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
         title="Print Slip or Save as PDF"
       >
-        <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
+        <i data-lucide="printer" class="w-4 h-4 text-slate-600 shrink-0"></i>
         <span>Print (PDF)</span>
       </button>
     </div>
@@ -431,7 +429,7 @@
       clone.style.boxSizing = "border-box";
       clone.style.display = "block";
       clone.style.border = "2px solid #0f172a";
-      clone.style.borderRadius = "16px";
+      clone.style.borderRadius = "0px";
 
       // Ensure the cloned logo uses the inline Base64 data URI to prevent file:// / CORS canvas taint
       const img = clone.querySelector('img');
