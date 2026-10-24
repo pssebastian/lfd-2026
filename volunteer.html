@@ -62,10 +62,10 @@
       display: none !important;
     }
 
-    /* Floating Toast Notification (Based on Test/index.html reference) */
+    /* Floating Toast Notification (Above bottom bar on mobile, standard bottom on desktop) */
     .toast-notification {
       position: fixed;
-      bottom: 24px;
+      bottom: 78px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: #0f172a;
@@ -82,6 +82,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    @media (min-width: 640px) {
+      .toast-notification {
+        bottom: 24px;
+      }
     }
     .toast-notification.show {
       transform: translateX(-50%) translateY(0);
@@ -117,6 +122,7 @@
       footer,
       #offline-banner,
       #main-screen-content,
+      #mobile-bottom-bar,
       .toast-notification,
       .no-print {
         display: none !important;
@@ -166,12 +172,12 @@
         <img src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="2026 International Convention" class="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-sm">
         <div>
           <span class="font-bold text-slate-900 text-xs sm:text-sm leading-tight block">LOCAL FOR A DAY</span>
-          <span class="text-[10px] sm:text-[11px] font-semibold text-brand-900 uppercase tracking-wider block">Local Volunteers</span>
+          <span class="text-[10px] sm:text-[11px] font-semibold text-brand-900 uppercase tracking-wider block">Volunteer Portal</span>
         </div>
       </a>
 
-      <!-- Right Nav Actions: Save Image, Print (PDF), Home (Logout) -->
-      <div class="flex items-center gap-1.5 sm:gap-2.5">
+      <!-- Desktop Nav Actions: Save Image, Print (PDF), Home (Logout) -->
+      <div class="hidden sm:flex items-center gap-2 sm:gap-2.5">
         <!-- Save Slip as Image Action (Direct Download / Share) -->
         <button 
           id="btn-header-save-image" 
@@ -214,7 +220,7 @@
   <!-- =========================================================================
        Main Content Container (Screen View)
        ========================================================================= -->
-  <main id="main-screen-content" class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 no-print">
+  <main id="main-screen-content" class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-24 sm:pb-8 space-y-6 sm:space-y-8 no-print">
     
     <!-- Hero / Volunteer Identity (Seamless, Page Background, Sans Font) -->
     <section class="pt-2 sm:pt-4 pb-2">
@@ -279,11 +285,54 @@
   <!-- =========================================================================
        Footer (Screen View, No buttons)
        ========================================================================= -->
-  <footer class="w-full border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 no-print">
+  <footer class="w-full border-t border-slate-200 bg-white py-6 mb-20 sm:mb-0 text-center text-xs text-slate-500 no-print">
     <div class="max-w-4xl mx-auto px-4 text-center">
       <p>© 2026 Local for a Day · San Miguel Congregation · Philippines 2026 International Convention</p>
     </div>
   </footer>
+
+  <!-- =========================================================================
+       Mobile Bottom Action Bar (Fixed at bottom edge of mobile viewport)
+       ========================================================================= -->
+  <nav id="mobile-bottom-bar" aria-label="Mobile Volunteer Actions" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 sm:hidden no-print shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[max(0.625rem,env(safe-area-inset-bottom))]">
+    <div class="flex items-center gap-2 max-w-md mx-auto">
+      <!-- Home (Logout) Button -->
+      <button 
+        id="btn-mobile-home"
+        type="button"
+        onclick="handleVolunteerLogout()"
+        class="py-2.5 px-3.5 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors touch-target"
+        title="Return Home & Logout"
+      >
+        <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
+        <span>Home</span>
+      </button>
+
+      <!-- Save Image (Primary CTA Button) -->
+      <button 
+        id="btn-mobile-save-image"
+        type="button"
+        onclick="exportVolunteerSlipImage()"
+        class="flex-1 py-2.5 px-3 rounded-xl bg-brand-900 active:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all touch-target"
+        title="Save Slip as Image (PNG)"
+      >
+        <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
+        <span>Save Image</span>
+      </button>
+
+      <!-- Print / Save as PDF Button -->
+      <button 
+        id="btn-mobile-print"
+        type="button"
+        onclick="window.print()"
+        class="py-2.5 px-3.5 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors touch-target"
+        title="Print Slip or Save as PDF"
+      >
+        <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
+        <span>Print (PDF)</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- =========================================================================
        Dedicated Compact Printable Slip Container (Visible ONLY in Print / PDF & Image Capture)
@@ -711,17 +760,25 @@
       }
 
       // 7. Home / Logout Action
+      function handleVolunteerLogout() {
+        if (typeof VolunteerService !== 'undefined') {
+          VolunteerService.logout();
+        } else {
+          sessionStorage.removeItem('lfd_v2_auth_volunteer');
+          sessionStorage.removeItem('lfd_v2_volunteer_name');
+        }
+        window.location.href = 'index.html';
+      }
+      window.handleVolunteerLogout = handleVolunteerLogout;
+
       const homeLogoutBtn = document.getElementById('home-logout-btn');
       if (homeLogoutBtn) {
-        homeLogoutBtn.addEventListener('click', () => {
-          if (typeof VolunteerService !== 'undefined') {
-            VolunteerService.logout();
-          } else {
-            sessionStorage.removeItem('lfd_v2_auth_volunteer');
-            sessionStorage.removeItem('lfd_v2_volunteer_name');
-          }
-          window.location.href = 'index.html';
-        });
+        homeLogoutBtn.addEventListener('click', handleVolunteerLogout);
+      }
+
+      const mobileHomeBtn = document.getElementById('btn-mobile-home');
+      if (mobileHomeBtn) {
+        mobileHomeBtn.addEventListener('click', handleVolunteerLogout);
       }
 
       // 8. Re-initialize Lucide Icons
