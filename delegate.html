@@ -46,6 +46,7 @@
 
   <!-- html2canvas & jsPDF for Pixel-Perfect Image and PDF Generation -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>window.html2canvas || document.write('<script src="assets/js/html2canvas.min.js"><\/script>')</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <!-- Lucide Icons -->
@@ -197,7 +198,7 @@
       <div class="max-w-2xl mx-auto">
         
         <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mb-4 shadow-sm">
-          <i data-lucide="smartphone" class="w-6 h-6"></i>
+          <i data-lucide="image" class="w-6 h-6"></i>
         </div>
 
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
@@ -205,37 +206,24 @@
         </h2>
 
         <p class="text-sm sm:text-base text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
-          Save this complete itinerary directly to your phone's calendar (Apple Calendar, Google Calendar, or Outlook) so you have full offline access anytime today. You can also view the live schedule sheet in Google Sheets.
+          Save a copy of the Local for a Day schedule directly to your phone so you have full offline access anytime today.
         </p>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <!-- Primary Save to Phone Button -->
+        <!-- Action Button -->
+        <div class="flex items-center justify-center">
           <button 
             type="button" 
-            id="btn-save-phone" 
-            class="touch-target w-full sm:w-auto px-7 py-3.5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base"
+            id="btn-get-schedule" 
+            class="touch-target w-full sm:w-auto px-8 py-3.5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base cursor-pointer"
           >
-            <i data-lucide="download" class="w-5 h-5 text-amber-400"></i>
-            <span>Save to Phone</span>
+            <i data-lucide="image" class="w-5 h-5 text-amber-400"></i>
+            <span>Get Schedule</span>
           </button>
-
-          <!-- Link to Google Sheets Schedule -->
-          <a 
-            href="https://docs.google.com/spreadsheets/d/13H2U8eHSzvVKKZ9jQnbCxHWzhmcfVidZsah-eErR9Jc/edit?usp=sharing" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="touch-target w-full sm:w-auto px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2 text-sm sm:text-base font-semibold"
-            title="Open Schedule of Activities in Google Sheets"
-          >
-            <i data-lucide="table" class="w-4 h-4 text-slate-950"></i>
-            <span>View Schedule Sheet</span>
-          </a>
         </div>
 
         <!-- Short small note underneath the button -->
         <p class="text-xs text-slate-500 mt-4 font-medium max-w-md mx-auto">
-          *Downloads a digital calendar file (.ics) containing all activities, exact times, locations, and notes.
+          *Saves an image snapshot of the complete schedule directly to your device for offline access.
         </p>
 
       </div>
@@ -402,6 +390,132 @@
   >
     <i data-lucide="chevron-up" class="w-5 h-5"></i>
   </a>
+
+  <!-- =========================================================================
+       LIVE SCHEDULE SHEET (Offscreen Element for Snapshot Generation)
+       Rendered without website header and footer for high-resolution export
+       ========================================================================= -->
+  <div id="live-schedule-offscreen" style="position: fixed; left: -9999px; top: 0; width: 1020px; z-index: -999; pointer-events: none; opacity: 1;" aria-hidden="true">
+    <div id="program-sheet" class="program-sheet bg-white">
+      
+      <!-- Program Header Banner (Matching Attached Template) -->
+      <div class="program-header p-8 sm:p-10 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+          
+          <div class="space-y-3">
+            <!-- Logo & Badge -->
+            <div class="flex items-center gap-3">
+              <img src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="Convention Logo" class="w-12 h-12 object-contain drop-shadow">
+              <div>
+                <span class="block text-xs uppercase tracking-[0.22em] text-amber-300 font-bold">2026 International Convention</span>
+                <span class="block text-xs text-slate-300 font-semibold">San Miguel & Mercado Congregation</span>
+              </div>
+            </div>
+
+            <!-- Title inspired by template "EVENT Program" -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+              LOCAL FOR A DAY <span class="font-script text-amber-300 text-4xl sm:text-5xl md:text-6xl font-normal ml-1">Program</span>
+            </h1>
+
+            <!-- Sub-headline matching template's tagline -->
+            <p class="text-slate-200 text-xs sm:text-sm font-medium tracking-wide">
+              Bringing brothers and sisters together in warm Christian love
+            </p>
+          </div>
+
+          <!-- Right Floating Date & Time Badge (Matching Template) -->
+          <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[170px] shadow-lg self-stretch md:self-auto flex flex-col justify-center">
+            <div class="flex items-center justify-center gap-2 mb-1">
+              <i data-lucide="calendar" class="w-4 h-4 text-amber-300"></i>
+              <span class="font-extrabold text-white text-base tracking-wide">14 NOV 2026</span>
+            </div>
+            <span class="text-xs text-amber-200/90 font-medium">Saturday</span>
+            <div class="mt-2 pt-2 border-t border-white/10 text-[11px] font-semibold text-slate-300">
+              07:15 AM – 06:00 PM
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Program Body: 2 Columns on Desktop, Stacked on Mobile -->
+      <div class="grid grid-cols-1 md:grid-cols-12 bg-white">
+        
+        <!-- Left Column (Sidebar Info Cards, matching template) -->
+        <div class="md:col-span-4 bg-slate-50/70 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-slate-200/80 space-y-7">
+          
+          <!-- Date Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">DATE</span>
+            <p class="text-sm font-bold text-slate-900">14 November 2026</p>
+            <p class="text-xs text-slate-600">Saturday</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Venue Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">MAIN VENUE</span>
+            <p class="text-sm font-bold text-slate-900 leading-snug">San Miguel & Mercado Kingdom Hall</p>
+            <p class="text-xs text-slate-600">Hagonoy, Bulacan, Philippines</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Audience Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="users" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">AUDIENCE</span>
+            <p class="text-sm font-bold text-slate-900">Visiting International Delegates</p>
+            <p class="text-xs text-slate-600">San Miguel Host Group</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Host Congregation Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-amber-300 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">HOST CONGREGATION</span>
+            <p class="text-sm font-bold text-slate-900">San Miguel Congregation</p>
+            <p class="text-xs text-slate-600">Bulacan, Philippines</p>
+          </div>
+
+          <div class="w-full h-px bg-slate-200"></div>
+
+          <!-- Passcode Reference Block -->
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center mb-2 shadow-sm">
+              <i data-lucide="key" class="w-4 h-4"></i>
+            </div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">DELEGATE GROUP CODE</span>
+            <span class="inline-block px-2.5 py-1 bg-amber-50 text-amber-900 font-mono font-bold text-xs rounded-md border border-amber-200">
+              lfd2026
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Right Column (The Schedule Table Rows) -->
+        <div class="md:col-span-8 p-2 sm:p-4 divide-y divide-slate-100">
+          <div id="program-schedule-items" class="program-schedule-items">
+            <!-- Rendered dynamically via app.js in harmony with itinerary -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
   <!-- Passcode Unlock Modal (For Direct Link / Session Expiry) -->
   <div id="auth-gate-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden animate-fade-in no-print" aria-modal="true" role="dialog">

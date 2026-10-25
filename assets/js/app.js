@@ -317,31 +317,31 @@ function initSaveToPhone() {
 }
 
 /* ==========================================================================
-   2. Copied Program Schedule Template (for program.html)
+   2. Copied Program Schedule Template (for program.html & delegate.html snapshot)
    ========================================================================== */
 
 function renderProgramSchedule() {
-  const container = document.getElementById('program-schedule-items');
-  if (!container) return;
+  const containers = document.querySelectorAll('#program-schedule-items, .program-schedule-items');
+  if (!containers.length) return;
 
-  container.innerHTML = ACTIVITIES.map((act) => {
+  const html = ACTIVITIES.map((act) => {
     return `
-      <div class="program-item p-4 sm:p-5 flex flex-col sm:flex-row gap-2 sm:gap-6 items-start">
+      <div class="program-item p-4 sm:p-5 flex flex-col sm:flex-row gap-2 sm:gap-6 items-start border-b border-slate-100 last:border-b-0">
         
-        <!-- Left Column: Time -->
-        <div class="sm:w-36 flex-shrink-0">
-          <span class="inline-block font-extrabold text-amber-700 sm:text-slate-900 text-sm sm:text-base tracking-tight font-mono">
-            ${escapeHtml(act.programTime)}
+        <!-- Left Column: Exact Time Range & Duration in harmony with Itinerary -->
+        <div class="sm:w-48 flex-shrink-0">
+          <span class="inline-block font-bold text-emerald-950 text-sm sm:text-base tracking-tight font-mono leading-tight">
+            ${escapeHtml(act.time)}
           </span>
-          <span class="block text-[11px] text-slate-500 font-medium">
-            ${escapeHtml(act.duration)}
+          <span class="block text-[11px] text-slate-500 font-semibold mt-0.5">
+            Duration: ${escapeHtml(act.duration)}
           </span>
         </div>
 
-        <!-- Right Column: Title, Location & Description -->
+        <!-- Right Column: Exact Activity Title, Location & Description -->
         <div class="flex-1 min-w-0">
-          <h4 class="font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wide mb-1 leading-snug">
-            ${escapeHtml(act.programTitle)}
+          <h4 class="font-bold text-slate-900 text-sm sm:text-base mb-1.5 leading-snug">
+            ${escapeHtml(act.title)}
           </h4>
 
           <div class="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 mb-1.5">
@@ -351,7 +351,7 @@ function renderProgramSchedule() {
             </div>
             ${act.mapLink ? `
               <a href="${escapeHtml(act.mapLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-900 hover:underline inline-flex items-center gap-0.5 ml-1 font-bold">
-                <span>(Maps)</span>
+                <span>(Google Maps)</span>
                 <i data-lucide="external-link" class="w-3 h-3"></i>
               </a>
             ` : ''}
@@ -368,6 +368,10 @@ function renderProgramSchedule() {
       </div>
     `;
   }).join('');
+
+  containers.forEach(container => {
+    container.innerHTML = html;
+  });
 
   if (window.lucide) {
     window.lucide.createIcons();
@@ -460,7 +464,7 @@ function parseGoogleSheetCSV(csvText) {
       endTime: convertTimeToICS(endTimeStr || startTimeStr),
       duration: duration || 'Scheduled',
       title: activityRaw,
-      programTitle: activityRaw.toUpperCase(),
+      programTitle: activityRaw,
       location: locationRaw,
       mapLink: mapLinkRaw,
       notes: notesRaw,
@@ -485,7 +489,7 @@ async function syncActivitiesFromGoogleSheet() {
       if (document.getElementById('timeline-container')) {
         renderTimeline();
       }
-      if (document.getElementById('program-schedule-items')) {
+      if (document.querySelector('#program-schedule-items, .program-schedule-items')) {
         renderProgramSchedule();
       }
     }
@@ -494,7 +498,7 @@ async function syncActivitiesFromGoogleSheet() {
   }
 }
 
-/* Save Schedule as Image & PDF for program.html */
+/* Save Schedule as Image & PDF for delegate.html and program.html */
 async function generateScheduleCanvas() {
   if (document.fonts) {
     try {
@@ -511,7 +515,19 @@ async function generateScheduleCanvas() {
     allowTaint: true,
     backgroundColor: '#ffffff',
     logging: false,
+    windowWidth: 1020,
     onclone: (clonedDoc) => {
+      const clonedWrapper = clonedDoc.getElementById('live-schedule-offscreen');
+      if (clonedWrapper) {
+        clonedWrapper.style.position = 'static';
+        clonedWrapper.style.left = '0';
+        clonedWrapper.style.top = '0';
+        clonedWrapper.style.width = '1020px';
+        clonedWrapper.style.maxWidth = '1020px';
+        clonedWrapper.style.margin = '0 auto';
+        clonedWrapper.style.overflow = 'visible';
+      }
+
       const clonedSheet = clonedDoc.getElementById('program-sheet');
       if (clonedSheet) {
         clonedSheet.style.width = '1020px';
@@ -543,48 +559,71 @@ async function generateScheduleCanvas() {
   });
 }
 
+async function handleScheduleImageDownload(triggerBtn) {
+  const btn = triggerBtn || document.getElementById('btn-get-schedule') || document.getElementById('btn-save-image');
+  let originalContent = '';
+  if (btn) {
+    originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-amber-400 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <span>Saving Schedule...</span>
+    `;
+  }
+
+  try {
+    showToast("Generating schedule image snapshot...");
+    const canvas = await generateScheduleCanvas();
+    if (canvas) {
+      const imageUri = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = 'Local-for-a-Day-Schedule.png';
+      link.href = imageUri;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("Schedule image saved! Check your photo gallery or downloads.");
+    } else {
+      showToast("Opening schedule page...");
+      window.open('program.html', '_blank');
+    }
+  } catch (err) {
+    console.error("Image generation error:", err);
+    showToast("Error creating snapshot. Opening printable view...");
+    window.open('program.html', '_blank');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalContent;
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+}
+
+window.downloadScheduleSnapshot = handleScheduleImageDownload;
+
 function initSaveScheduleImage() {
+  const getScheduleBtn = document.getElementById('btn-get-schedule');
   const saveImageBtn = document.getElementById('btn-save-image');
   const savePdfBtn = document.getElementById('btn-save-pdf');
   const printBtn = document.getElementById('btn-print-schedule');
 
-  // Save Image (PNG)
-  if (saveImageBtn) {
-    saveImageBtn.addEventListener('click', async (e) => {
+  // "Get Schedule" Button (delegate.html)
+  if (getScheduleBtn) {
+    getScheduleBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      handleScheduleImageDownload(getScheduleBtn);
+    });
+  }
 
-      const originalContent = saveImageBtn.innerHTML;
-      saveImageBtn.disabled = true;
-      saveImageBtn.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-amber-400 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-        </svg>
-        <span>Creating Image...</span>
-      `;
-
-      try {
-        const canvas = await generateScheduleCanvas();
-        if (canvas) {
-          const imageUri = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.download = 'Local-for-a-Day-Schedule.png';
-          link.href = imageUri;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          showToast("Schedule image saved! Check your photo gallery or downloads.");
-        } else {
-          window.print();
-        }
-      } catch (err) {
-        console.error("Image generation error:", err);
-        window.print();
-      } finally {
-        saveImageBtn.disabled = false;
-        saveImageBtn.innerHTML = originalContent;
-        if (window.lucide) window.lucide.createIcons();
-      }
+  // "Save Schedule as Image" Button (program.html)
+  if (saveImageBtn) {
+    saveImageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleScheduleImageDownload(saveImageBtn);
     });
   }
 
@@ -818,14 +857,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     renderTimeline();
-    initSaveToPhone();
     initGuestbookForm();
     syncActivitiesFromGoogleSheet();
   }
 
-  // Page 2: Copied Program Schedule Sheet (program.html)
-  if (document.getElementById('program-schedule-items')) {
-    if (!checkDelegateAuth()) {
+  // Live Program Schedule Sheet (program.html & delegate.html offscreen snapshot)
+  if (document.querySelector('#program-schedule-items, .program-schedule-items')) {
+    if (!document.getElementById('timeline-container') && !checkDelegateAuth()) {
       const authModal = document.getElementById('auth-gate-modal');
       if (authModal) {
         authModal.classList.remove('hidden');
@@ -835,7 +873,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderProgramSchedule();
     initSaveScheduleImage();
-    syncActivitiesFromGoogleSheet();
+    if (!document.getElementById('timeline-container')) {
+      syncActivitiesFromGoogleSheet();
+    }
   }
 
   // If Lucide icons are available
