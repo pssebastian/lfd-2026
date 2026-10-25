@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lfd-v2-cache-v18';
+const CACHE_NAME = 'lfd-v2-cache-v19';
 const PRECACHE_URLS = [
   './',
   './index.html',

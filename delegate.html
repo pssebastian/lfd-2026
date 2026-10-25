@@ -73,40 +73,61 @@
         <img src="assets/images/jw_ic_logo_2-removebg-preview.png" alt="2026 International Convention" class="w-10 h-10 object-contain drop-shadow-sm">
         <div>
           <span class="font-bold text-slate-900 text-sm leading-tight block">LOCAL FOR A DAY</span>
-          <span class="text-[11px] font-semibold text-brand-900 uppercase tracking-wider block">San Miguel Congregation</span>
+          <span class="text-[11px] font-semibold text-brand-900 uppercase tracking-wider block">Delegates Portal</span>
         </div>
       </a>
 
-      <!-- Right Nav Elements: Clock & Quick Navigation -->
-      <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Desktop Nav Elements: Clock & Action Buttons (Hidden on mobile, shown in bottom bar) -->
+      <div class="hidden sm:flex items-center gap-2 sm:gap-3">
         <!-- Live Clock -->
-        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-900 text-xs font-semibold">
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-900 text-xs font-semibold">
           <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-700"></i>
           <span id="live-clock">Loading...</span>
         </div>
 
-        <!-- Jump Links -->
-        <nav class="flex items-center gap-1 text-xs font-bold text-slate-700" aria-label="Page Sections">
-          <a href="#timeline" class="px-3 py-1.5 rounded-full hover:bg-slate-100 transition-colors">
-            Itinerary
+        <!-- Desktop Action Buttons: Guestbook, View Schedule, Logout (Equal width) -->
+        <nav class="flex items-center gap-2 text-xs font-bold" aria-label="Desktop Navigation">
+          <a 
+            href="#guestbook" 
+            class="w-28 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+            title="Go to Guestbook"
+          >
+            <i data-lucide="message-square" class="w-3.5 h-3.5 text-slate-600"></i>
+            <span>Guestbook</span>
           </a>
-          <a href="#guestbook" class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors">
-            Guestbook
+
+          <a 
+            href="program.html" 
+            class="w-32 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white flex items-center justify-center gap-1.5 shadow-sm transition-all"
+            title="View Event Program Schedule Sheet"
+          >
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-amber-300"></i>
+            <span>View Schedule</span>
           </a>
+
+          <button 
+            type="button" 
+            onclick="handleDelegateLogout()" 
+            class="w-28 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 flex items-center justify-center gap-1.5 transition-colors"
+            title="Logout of Delegate Portal"
+          >
+            <i data-lucide="log-out" class="w-3.5 h-3.5 text-amber-700"></i>
+            <span>Logout</span>
+          </button>
         </nav>
       </div>
 
     </div>
   </header>
 
-  <main class="flex-1">
+  <main class="flex-1 pb-20 sm:pb-0">
 
     <!-- =========================================================================
-         1. HERO SECTION (High-Contrast Midnight Emerald Canvas)
+         1. HERO SECTION (Regular Hero, Palette Brand Green Background, No Card)
          ========================================================================= -->
-    <section id="hero" class="relative hero-bg-deep hero-pattern text-white py-14 sm:py-20 px-4 sm:px-6 overflow-hidden no-print">
+    <section id="hero" class="relative bg-brand-900 text-white py-14 sm:py-20 px-4 sm:px-6 overflow-hidden no-print">
       
-      <div class="max-w-3xl mx-auto text-center relative z-10 bg-black/40 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl">
+      <div class="max-w-3xl mx-auto text-center relative z-10">
         
         <!-- Welcome Badge -->
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-300 text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
@@ -161,64 +182,64 @@
       </div>
 
       <!-- Timeline Container (Populated via assets/js/app.js) -->
-      <div id="timeline-container" class="timeline-track relative mb-12">
+      <div id="timeline-container" class="timeline-track relative">
         <!-- Rendered dynamically -->
-      </div>
-
-      <!-- =====================================================================
-           Save to Phone Callout Block
-           ===================================================================== -->
-      <div class="card-clean p-6 sm:p-8 bg-gradient-to-br from-white to-amber-50/40 border-2 border-amber-200 text-center relative overflow-hidden shadow-md">
-        <div class="max-w-md mx-auto">
-          
-          <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mb-4 shadow-sm">
-            <i data-lucide="smartphone" class="w-6 h-6"></i>
-          </div>
-
-          <h3 class="text-xl font-bold text-slate-900 mb-2">
-            Keep Your Schedule Always Accessible
-          </h3>
-
-          <p class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
-            Save this complete itinerary directly to your phone's calendar (Apple Calendar, Google Calendar, or Outlook) so you have full offline access anytime today. You can also view the dedicated program sheet.
-          </p>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <!-- Primary Save to Phone Button -->
-            <button 
-              type="button" 
-              id="btn-save-phone" 
-              class="touch-target w-full sm:w-auto px-7 py-3.5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base"
-            >
-              <i data-lucide="download" class="w-5 h-5 text-amber-400"></i>
-              <span>Save to Phone</span>
-            </button>
-
-            <!-- Link to Separate Program Sheet Page -->
-            <a 
-              href="program.html" 
-              class="touch-target w-full sm:w-auto px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2 text-sm font-semibold"
-            >
-              <i data-lucide="file-text" class="w-4 h-4 text-slate-950"></i>
-              <span>View Program Sheet</span>
-            </a>
-          </div>
-
-          <!-- Short small note underneath the button -->
-          <p class="text-[11px] text-slate-500 mt-3 font-medium">
-            *Downloads a digital calendar file (.ics) containing all 15 events, exact times, and venues.
-          </p>
-
-        </div>
       </div>
 
     </section>
 
     <!-- =========================================================================
-         3. DELEGATES GUESTBOOK SECTION
+         3. KEEP YOUR SCHEDULE ALWAYS ACCESSIBLE (Dedicated Standalone Section)
          ========================================================================= -->
-    <section id="guestbook" class="py-12 sm:py-16 px-4 sm:px-6 bg-white border-t border-slate-200 no-print">
+    <section id="save-schedule" class="py-12 sm:py-16 px-4 sm:px-6 bg-amber-50/50 border-t border-b border-amber-200/60 text-center relative overflow-hidden no-print">
+      <div class="max-w-2xl mx-auto">
+        
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mb-4 shadow-sm">
+          <i data-lucide="smartphone" class="w-6 h-6"></i>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+          Keep Your Schedule Always Accessible
+        </h2>
+
+        <p class="text-sm sm:text-base text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
+          Save this complete itinerary directly to your phone's calendar (Apple Calendar, Google Calendar, or Outlook) so you have full offline access anytime today. You can also view the dedicated program sheet.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <!-- Primary Save to Phone Button -->
+          <button 
+            type="button" 
+            id="btn-save-phone" 
+            class="touch-target w-full sm:w-auto px-7 py-3.5 bg-brand-900 hover:bg-brand-950 text-white font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2.5 text-sm sm:text-base"
+          >
+            <i data-lucide="download" class="w-5 h-5 text-amber-400"></i>
+            <span>Save to Phone</span>
+          </button>
+
+          <!-- Link to Separate Program Sheet Page -->
+          <a 
+            href="program.html" 
+            class="touch-target w-full sm:w-auto px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-2 text-sm sm:text-base font-semibold"
+          >
+            <i data-lucide="file-text" class="w-4 h-4 text-slate-950"></i>
+            <span>View Program Sheet</span>
+          </a>
+        </div>
+
+        <!-- Short small note underneath the button -->
+        <p class="text-xs text-slate-500 mt-4 font-medium max-w-md mx-auto">
+          *Downloads a digital calendar file (.ics) containing all 15 events, exact times, and venues.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         4. DELEGATES GUESTBOOK SECTION
+         ========================================================================= -->
+    <section id="guestbook" class="py-12 sm:py-16 px-4 sm:px-6 bg-white border-b border-slate-200 no-print">
       <div class="max-w-2xl mx-auto">
         
         <!-- Section Header -->
@@ -319,15 +340,57 @@
   </main>
 
   <!-- Footer -->
-  <footer class="text-center py-4 text-xs text-slate-500 no-print">
+  <footer class="text-center py-4 mb-20 sm:mb-0 text-xs text-slate-500 no-print">
     <p>© 2026 Local for a Day · Philippines 2026 International Convention</p>
   </footer>
+
+  <!-- =========================================================================
+       Mobile Bottom Action Bar (Fixed at bottom edge of mobile viewport)
+       Order: Guestbook, View Schedule, Logout (Equal width)
+       ========================================================================= -->
+  <nav id="mobile-bottom-bar" aria-label="Mobile Delegate Actions" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 sm:hidden no-print shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[max(0.625rem,env(safe-area-inset-bottom))]">
+    <div class="grid grid-cols-3 gap-2 max-w-md mx-auto w-full">
+      <!-- 1. Guestbook Button -->
+      <a 
+        id="btn-mobile-guestbook"
+        href="#guestbook"
+        class="w-full py-2.5 px-2 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
+        title="Go to Guestbook"
+      >
+        <i data-lucide="message-square" class="w-4 h-4 text-slate-600 shrink-0"></i>
+        <span>Guestbook</span>
+      </a>
+
+      <!-- 2. View Schedule Button -->
+      <a 
+        id="btn-mobile-schedule"
+        href="program.html"
+        class="w-full py-2.5 px-2 rounded-xl bg-brand-900 active:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all touch-target whitespace-nowrap"
+        title="View Event Program Schedule Sheet"
+      >
+        <i data-lucide="calendar" class="w-4 h-4 text-amber-300 shrink-0"></i>
+        <span>View Schedule</span>
+      </a>
+
+      <!-- 3. Logout Button -->
+      <button 
+        id="btn-mobile-logout"
+        type="button"
+        onclick="handleDelegateLogout()"
+        class="w-full py-2.5 px-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
+        title="Logout of Delegate Portal"
+      >
+        <i data-lucide="log-out" class="w-4 h-4 text-amber-700 shrink-0"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Back to Top Button -->
   <a 
     href="#hero" 
     id="btn-back-to-top"
-    class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-brand-900 text-white shadow-xl flex items-center justify-center hover:bg-brand-950 hover:scale-105 active:scale-95 transition-all touch-target focus:outline-none focus:ring-2 focus:ring-amber-500 no-print"
+    class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-30 w-11 h-11 rounded-full bg-brand-900 text-white shadow-xl flex items-center justify-center hover:bg-brand-950 hover:scale-105 active:scale-95 transition-all touch-target focus:outline-none focus:ring-2 focus:ring-amber-500 no-print"
     aria-label="Back to Top"
   >
     <i data-lucide="chevron-up" class="w-5 h-5"></i>
@@ -382,7 +445,25 @@
   <!-- Scripts -->
   <script src="assets/js/app.js"></script>
   <script>
+    function handleDelegateLogout() {
+      if (typeof clearDelegateAuth === 'function') {
+        clearDelegateAuth();
+      } else {
+        try {
+          localStorage.removeItem('lfd_v2_auth_delegate');
+          localStorage.removeItem('lfd_v2_auth_delegate_expiry');
+          sessionStorage.removeItem('lfd_v2_auth_delegate');
+        } catch (e) {}
+      }
+      window.location.href = 'index.html';
+    }
+    window.handleDelegateLogout = handleDelegateLogout;
+
     document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+
       const gateForm = document.getElementById('delegate-gate-form');
       const gateInput = document.getElementById('delegate-gate-input');
       const gateError = document.getElementById('delegate-gate-error');
