@@ -18,13 +18,13 @@ let ACTIVITIES = [
     programTime: "07:15 AM",
     startTime: "20261114T071500",
     endTime: "20261114T094500",
-    duration: "2 hrs 30 mins",
+    duration: "2.5 hrs",
     title: "Van ride: Okada Manila to Kingdom Hall",
     programTitle: "VAN RIDE: OKADA MANILA TO KINGDOM HALL",
-    location: "Okada Manila to Kingdom Hall, Bulacan",
+    location: "Manila to Hagonoy, Bulacan",
     mapLink: "",
     notes: "",
-    description: "Comfortable chartered van ride from Okada Manila to San Miguel & Mercado Kingdom Hall in Hagonoy, Bulacan."
+    description: ""
   },
   {
     id: 2,
@@ -32,13 +32,13 @@ let ACTIVITIES = [
     programTime: "09:45 AM",
     startTime: "20261114T094500",
     endTime: "20261114T100000",
-    duration: "15 mins",
+    duration: "0.25 hrs",
     title: "Welcome and morning merienda",
     programTitle: "WELCOME AND MORNING MERIENDA",
     location: "Kingdom Hall",
     mapLink: "https://maps.app.goo.gl/uthkPan3vRQFtaiR6",
     notes: "",
-    description: "Joyful welcome from the host congregation family and morning merienda at the Kingdom Hall."
+    description: ""
   },
   {
     id: 3,
@@ -46,13 +46,13 @@ let ACTIVITIES = [
     programTime: "10:00 AM",
     startTime: "20261114T100000",
     endTime: "20261114T113000",
-    duration: "1 hr 30 mins",
+    duration: "1.5 hrs",
     title: "Morning ministry appointments",
     programTitle: "MORNING MINISTRY APPOINTMENTS",
-    location: "San Miguel Local Territory",
+    location: "Territory locations of San Miguel Congregation.",
     mapLink: "",
     notes: "Return Visit / Bible Study / Cart Witnessing",
-    description: "Engage in field ministry appointments alongside local publishers: Return Visits, Bible Studies, and Cart Witnessing."
+    description: "Return Visit / Bible Study / Cart Witnessing"
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ let ACTIVITIES = [
     location: "Zoleta's Residence",
     mapLink: "https://maps.app.goo.gl/AdF5K3wdmUttRMmC8",
     notes: "",
-    description: "Hearty home-cooked Filipino lunch and warm Christian association at Zoleta's Residence."
+    description: ""
   },
   {
     id: 5,
@@ -74,13 +74,13 @@ let ACTIVITIES = [
     programTime: "01:00 PM",
     startTime: "20261114T130000",
     endTime: "20261114T143000",
-    duration: "1 hr 30 mins",
+    duration: "1.5 hrs",
     title: "Relax, chat & enjoy everyday local life",
     programTitle: "RELAX, CHAT & ENJOY EVERYDAY LOCAL LIFE",
     location: "Soco's Residence",
     mapLink: "https://maps.app.goo.gl/BLQMkG8z4SbSwr396",
     notes: "",
-    description: "Relax, chat, and experience everyday local life together in a welcoming home setting."
+    description: ""
   },
   {
     id: 6,
@@ -88,13 +88,13 @@ let ACTIVITIES = [
     programTime: "02:30 PM",
     startTime: "20261114T143000",
     endTime: "20261114T150000",
-    duration: "30 mins",
+    duration: "0.5 hrs",
     title: "Light outing with fun activities",
     programTitle: "LIGHT OUTING WITH FUN ACTIVITIES",
     location: "Soco's Residence",
     mapLink: "https://maps.app.goo.gl/BLQMkG8z4SbSwr396",
     notes: "",
-    description: "Light outing with fun activities, cultural fellowship, and uplifting association."
+    description: ""
   },
   {
     id: 7,
@@ -102,13 +102,13 @@ let ACTIVITIES = [
     programTime: "03:00 PM",
     startTime: "20261114T150000",
     endTime: "20261114T153000",
-    duration: "30 mins",
+    duration: "0.5 hrs",
     title: "Afternoon merienda & association",
     programTitle: "AFTERNOON MERIENDA & ASSOCIATION",
-    location: "Soco's Residence / Gathering Venue",
-    mapLink: "",
+    location: "Soco's Residence",
+    mapLink: "https://maps.app.goo.gl/BLQMkG8z4SbSwr396",
     notes: "",
-    description: "Enjoy traditional Filipino afternoon merienda and refreshing treats with the friends."
+    description: ""
   },
   {
     id: 8,
@@ -116,13 +116,13 @@ let ACTIVITIES = [
     programTime: "03:30 PM",
     startTime: "20261114T153000",
     endTime: "20261114T170000",
-    duration: "1 hr 30 mins",
+    duration: "1.5 hrs",
     title: "Flexible afternoon ministry",
     programTitle: "FLEXIBLE AFTERNOON MINISTRY",
-    location: "San Miguel Local Territory",
+    location: "Territory locations of San Miguel Congregation.",
     mapLink: "",
     notes: "Return Visit / Bible Study",
-    description: "Flexible afternoon ministry appointments: Return Visits and Bible Studies with local community residents."
+    description: "Return Visit / Bible Study"
   },
   {
     id: 9,
@@ -130,13 +130,13 @@ let ACTIVITIES = [
     programTime: "05:15 PM",
     startTime: "20261114T171500",
     endTime: "20261114T180000",
-    duration: "45 mins",
+    duration: "0.75 hrs",
     title: "Early dinner & farewell",
     programTitle: "EARLY DINNER & FAREWELL",
-    location: "Jollibee",
+    location: "Jollibee, San Pedro, Hagonoy, Bulacan",
     mapLink: "https://maps.app.goo.gl/fTfmTCoUTLtHpLAaA",
     notes: "With van ride back to Okada Manila.",
-    description: "Early dinner and farewell gathering at Jollibee, followed by van ride back to Okada Manila."
+    description: "With van ride back to Okada Manila."
   }
 ];
 
@@ -236,7 +236,7 @@ function renderTimeline() {
           </h3>
 
           <!-- Location & Google Maps Link -->
-          <div class="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1.5 rounded-lg mb-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1.5 rounded-lg mb-2">
             <div class="flex items-center gap-2 min-w-0">
               <i data-lucide="map-pin" class="w-4 h-4 text-emerald-700 flex-shrink-0"></i>
               <span>${escapeHtml(act.location)}</span>
@@ -249,16 +249,11 @@ function renderTimeline() {
             ` : ''}
           </div>
 
-          <!-- Delegate Experience Description -->
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-            ${escapeHtml(act.description)}
-          </p>
-
-          ${act.notes ? `
-            <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200/80 text-amber-900 text-xs font-semibold">
-              <i data-lucide="info" class="w-3.5 h-3.5 text-amber-700 flex-shrink-0"></i>
-              <span><strong>Note:</strong> ${escapeHtml(act.notes)}</span>
-            </div>
+          <!-- Description (Shows ONLY notes from google sheet, blank if none) -->
+          ${act.description ? `
+            <p class="text-slate-600 text-sm md:text-base leading-relaxed mt-2 pt-2 border-t border-slate-100">
+              ${escapeHtml(act.description)}
+            </p>
           ` : ''}
         </div>
       </div>
@@ -290,7 +285,7 @@ function generateICSFile() {
     icsLines.push(`DTEND;TZID=Asia/Manila:${act.endTime}`);
     icsLines.push(`SUMMARY:${act.title}`);
     icsLines.push(`LOCATION:${act.location}`);
-    icsLines.push(`DESCRIPTION:${act.description}${act.notes ? ' [Note: ' + act.notes + ']' : ''}${act.mapLink ? ' [Maps: ' + act.mapLink + ']' : ''}`);
+    icsLines.push(`DESCRIPTION:${act.description || act.title}${act.mapLink ? ' [Maps: ' + act.mapLink + ']' : ''}`);
     icsLines.push("STATUS:CONFIRMED");
     icsLines.push("END:VEVENT");
   });
@@ -343,17 +338,13 @@ function renderProgramSchedule() {
           </span>
         </div>
 
-        <!-- Right Column: Title, Description & Location -->
+        <!-- Right Column: Title, Location & Description -->
         <div class="flex-1 min-w-0">
           <h4 class="font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wide mb-1 leading-snug">
             ${escapeHtml(act.programTitle)}
           </h4>
 
-          <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-2">
-            ${escapeHtml(act.description)}
-          </p>
-
-          <div class="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+          <div class="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 mb-1.5">
             <div class="inline-flex items-center gap-1.5">
               <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
               <span>${escapeHtml(act.location)}</span>
@@ -366,11 +357,11 @@ function renderProgramSchedule() {
             ` : ''}
           </div>
 
-          ${act.notes ? `
-            <div class="mt-2 text-[11px] text-amber-900 font-medium flex items-center gap-1.5 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60 inline-flex">
-              <i data-lucide="info" class="w-3 h-3 text-amber-700 flex-shrink-0"></i>
-              <span><strong>Note:</strong> ${escapeHtml(act.notes)}</span>
-            </div>
+          <!-- Description (Shows ONLY notes from google sheet, blank if none) -->
+          ${act.description ? `
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-1">
+              ${escapeHtml(act.description)}
+            </p>
           ` : ''}
         </div>
 
@@ -386,6 +377,37 @@ function renderProgramSchedule() {
 /* ==========================================================================
    3. Google Sheet Live Sync Utility (Delegate Schedule)
    ========================================================================== */
+
+function parseMinutesFromTimeStr(timePart, defaultAmPm) {
+  if (!timePart) return null;
+  const match = timePart.trim().match(/(\d{1,2}):(\d{2})(?:\s*(AM|PM))?/i);
+  if (!match) return null;
+  let hours = parseInt(match[1], 10);
+  const minutes = parseInt(match[2], 10);
+  const ampm = (match[3] || defaultAmPm || '').toUpperCase();
+  if (ampm === 'PM' && hours < 12) hours += 12;
+  if (ampm === 'AM' && hours === 12) hours = 0;
+  return hours * 60 + minutes;
+}
+
+function calculateDecimalDuration(timeRaw) {
+  if (!timeRaw) return '';
+  const parts = timeRaw.split('-').map(p => p.trim());
+  if (parts.length < 2) return '';
+  const endAmPmMatch = parts[1].match(/(AM|PM)/i);
+  const defaultAmPm = endAmPmMatch ? endAmPmMatch[1] : '';
+  const startAmPmMatch = parts[0].match(/(AM|PM)/i);
+  const startAmPm = startAmPmMatch ? startAmPmMatch[1] : defaultAmPm;
+  const endAmPm = endAmPmMatch ? endAmPmMatch[1] : startAmPm;
+  let startMins = parseMinutesFromTimeStr(parts[0], startAmPm);
+  let endMins = parseMinutesFromTimeStr(parts[1], endAmPm);
+  if (startMins === null || endMins === null) return '';
+  if (endMins < startMins) endMins += 24 * 60;
+  const diffMins = endMins - startMins;
+  const hoursDecimal = diffMins / 60;
+  const rounded = Math.round(hoursDecimal * 100) / 100;
+  return `${rounded} ${rounded === 1 ? 'hr' : 'hrs'}`;
+}
 
 function convertTimeToICS(tStr) {
   if (!tStr) return "20261114T070000";
@@ -428,10 +450,7 @@ function parseGoogleSheetCSV(csvText) {
     const startTimeStr = timeParts[0] || '';
     const endTimeStr = timeParts[1] || '';
 
-    let duration = '';
-    if (startTimeStr && endTimeStr) {
-      duration = `${startTimeStr} – ${endTimeStr}`;
-    }
+    const duration = calculateDecimalDuration(timeRaw);
 
     items.push({
       id: i,
@@ -442,10 +461,10 @@ function parseGoogleSheetCSV(csvText) {
       duration: duration || 'Scheduled',
       title: activityRaw,
       programTitle: activityRaw.toUpperCase(),
-      location: locationRaw || (activityRaw.toLowerCase().includes('van ride') ? 'Okada Manila to Kingdom Hall, Bulacan' : 'San Miguel, Hagonoy, Bulacan'),
+      location: locationRaw,
       mapLink: mapLinkRaw,
       notes: notesRaw,
-      description: activityRaw + (notesRaw ? ` (${notesRaw})` : '')
+      description: notesRaw // Only text in notes column, blank if none
     });
   }
   return items;
