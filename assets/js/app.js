@@ -8,187 +8,135 @@ const PASSWORDS = {
   DELEGATE: "LFD2026"
 };
 
-// Activity Itinerary Tailored for Visiting Delegates
-const ACTIVITIES = [
+// Activity Itinerary Tailored for Visiting Delegates (Synchronized with Official Google Sheet)
+const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/13H2U8eHSzvVKKZ9jQnbCxHWzhmcfVidZsah-eErR9Jc/export?format=csv";
+
+let ACTIVITIES = [
   {
     id: 1,
-    time: "7:15 AM – 7:30 AM",
+    time: "07:15 AM – 09:45 AM",
     programTime: "07:15 AM",
     startTime: "20261114T071500",
-    endTime: "20261114T073000",
-    duration: "15 mins",
-    title: "Morning Assembly & Van Boarding",
-    programTitle: "MORNING ASSEMBLY & VAN BOARDING",
-    location: "Okada Manila Main Lobby",
-    description: "Meet your host brothers and sisters at the Okada Manila lobby for a warm morning reception, headcount, and comfortable private van boarding."
+    endTime: "20261114T094500",
+    duration: "2 hrs 30 mins",
+    title: "Van ride: Okada Manila to Kingdom Hall",
+    programTitle: "VAN RIDE: OKADA MANILA TO KINGDOM HALL",
+    location: "Okada Manila to Kingdom Hall, Bulacan",
+    mapLink: "",
+    notes: "",
+    description: "Comfortable chartered van ride from Okada Manila to San Miguel & Mercado Kingdom Hall in Hagonoy, Bulacan."
   },
   {
     id: 2,
-    time: "7:30 AM – 9:45 AM",
-    programTime: "07:30 AM",
-    startTime: "20261114T073000",
-    endTime: "20261114T094500",
-    duration: "2 hrs 15 mins",
-    title: "Scenic Travel to Bulacan",
-    programTitle: "SCENIC TRAVEL TO BULACAN",
-    location: "En Route to Hagonoy, Bulacan",
-    description: "Relax in your chartered air-conditioned van with complimentary morning travel snacks, bottled water, and a pleasant orientation briefing as we journey north."
-  },
-  {
-    id: 3,
-    time: "9:45 AM – 10:00 AM",
+    time: "09:45 AM – 10:00 AM",
     programTime: "09:45 AM",
     startTime: "20261114T094500",
     endTime: "20261114T100000",
     duration: "15 mins",
-    title: "Welcome & Refreshments",
-    programTitle: "WELCOME & REFRESHMENTS",
-    location: "San Miguel & Mercado Kingdom Hall",
-    description: "Step into the Kingdom Hall to a joyful welcome from the congregation family, enjoy cool tropical refreshments, and take a brief rest before the morning activity."
+    title: "Welcome and morning merienda",
+    programTitle: "WELCOME AND MORNING MERIENDA",
+    location: "Kingdom Hall",
+    mapLink: "https://maps.app.goo.gl/uthkPan3vRQFtaiR6",
+    notes: "",
+    description: "Joyful welcome from the host congregation family and morning merienda at the Kingdom Hall."
   },
   {
-    id: 4,
+    id: 3,
     time: "10:00 AM – 11:30 AM",
     programTime: "10:00 AM",
     startTime: "20261114T100000",
     endTime: "20261114T113000",
     duration: "1 hr 30 mins",
-    title: "Morning Field Ministry",
-    programTitle: "MORNING FIELD MINISTRY",
-    location: "Hagonoy Local Territory",
-    description: "Join local publishers in the field ministry, participating in cart witnessing, friendly return visits, and sharing the good news with the welcoming local community."
+    title: "Morning ministry appointments",
+    programTitle: "MORNING MINISTRY APPOINTMENTS",
+    location: "San Miguel Local Territory",
+    mapLink: "",
+    notes: "Return Visit / Bible Study / Cart Witnessing",
+    description: "Engage in field ministry appointments alongside local publishers: Return Visits, Bible Studies, and Cart Witnessing."
   },
   {
-    id: 5,
-    time: "11:30 AM – 12:00 PM",
-    programTime: "11:30 AM",
-    startTime: "20261114T113000",
-    endTime: "20261114T120000",
-    duration: "30 mins",
-    title: "Traditional Tricycle Ride to Lunch",
-    programTitle: "TRADITIONAL TRICYCLE RIDE TO LUNCH",
-    location: "En Route to Zoleta's Residence",
-    description: "Experience an authentic, memorable ride in the Philippines' iconic motorized tricycles through the charming neighborhood streets of Hagonoy."
-  },
-  {
-    id: 6,
-    time: "12:00 PM – 1:00 PM",
+    id: 4,
+    time: "12:00 PM – 01:00 PM",
     programTime: "12:00 PM",
     startTime: "20261114T120000",
     endTime: "20261114T130000",
     duration: "1 hr",
-    title: "Home-Cooked Filipino Lunch & Association",
-    programTitle: "HOME-COOKED FILIPINO LUNCH & ASSOCIATION",
+    title: "Filipino lunch & warm association",
+    programTitle: "FILIPINO LUNCH & WARM ASSOCIATION",
     location: "Zoleta's Residence",
-    description: "Delight in a hearty, authentic home-cooked Filipino meal prepared with love, and enjoy warm, uplifting association with local families."
+    mapLink: "https://maps.app.goo.gl/AdF5K3wdmUttRMmC8",
+    notes: "",
+    description: "Hearty home-cooked Filipino lunch and warm Christian association at Zoleta's Residence."
+  },
+  {
+    id: 5,
+    time: "01:00 PM – 02:30 PM",
+    programTime: "01:00 PM",
+    startTime: "20261114T130000",
+    endTime: "20261114T143000",
+    duration: "1 hr 30 mins",
+    title: "Relax, chat & enjoy everyday local life",
+    programTitle: "RELAX, CHAT & ENJOY EVERYDAY LOCAL LIFE",
+    location: "Soco's Residence",
+    mapLink: "https://maps.app.goo.gl/BLQMkG8z4SbSwr396",
+    notes: "",
+    description: "Relax, chat, and experience everyday local life together in a welcoming home setting."
+  },
+  {
+    id: 6,
+    time: "02:30 PM – 03:00 PM",
+    programTime: "02:30 PM",
+    startTime: "20261114T143000",
+    endTime: "20261114T150000",
+    duration: "30 mins",
+    title: "Light outing with fun activities",
+    programTitle: "LIGHT OUTING WITH FUN ACTIVITIES",
+    location: "Soco's Residence",
+    mapLink: "https://maps.app.goo.gl/BLQMkG8z4SbSwr396",
+    notes: "",
+    description: "Light outing with fun activities, cultural fellowship, and uplifting association."
   },
   {
     id: 7,
-    time: "1:00 PM – 1:30 PM",
-    programTime: "01:00 PM",
-    startTime: "20261114T130000",
-    endTime: "20261114T133000",
+    time: "03:00 PM – 03:30 PM",
+    programTime: "03:00 PM",
+    startTime: "20261114T150000",
+    endTime: "20261114T153000",
     duration: "30 mins",
-    title: "Transfer to Gathering Home",
-    programTitle: "TRANSFER TO GATHERING HOME",
-    location: "En Route to Soco's Residence",
-    description: "Relaxed tricycle transfer to our afternoon gathering location. Parasols and cold drinking water will be provided for your comfort."
+    title: "Afternoon merienda & association",
+    programTitle: "AFTERNOON MERIENDA & ASSOCIATION",
+    location: "Soco's Residence / Gathering Venue",
+    mapLink: "",
+    notes: "",
+    description: "Enjoy traditional Filipino afternoon merienda and refreshing treats with the friends."
   },
   {
     id: 8,
-    time: "1:30 PM – 2:30 PM",
-    programTime: "01:30 PM",
-    startTime: "20261114T133000",
-    endTime: "20261114T143000",
-    duration: "1 hr",
-    title: "Cultural Fellowship & Light Activities",
-    programTitle: "CULTURAL FELLOWSHIP & LIGHT ACTIVITIES",
-    location: "Soco's Residence",
-    description: "Unwind in a cozy home setting with lighthearted fellowship, cultural sharing, and joyful moments together."
+    time: "03:30 PM – 05:00 PM",
+    programTime: "03:30 PM",
+    startTime: "20261114T153000",
+    endTime: "20261114T170000",
+    duration: "1 hr 30 mins",
+    title: "Flexible afternoon ministry",
+    programTitle: "FLEXIBLE AFTERNOON MINISTRY",
+    location: "San Miguel Local Territory",
+    mapLink: "",
+    notes: "Return Visit / Bible Study",
+    description: "Flexible afternoon ministry appointments: Return Visits and Bible Studies with local community residents."
   },
   {
     id: 9,
-    time: "2:30 PM – 3:15 PM",
-    programTime: "02:30 PM",
-    startTime: "20261114T143000",
-    endTime: "20261114T151500",
-    duration: "45 mins",
-    title: "Traditional Afternoon Merienda",
-    programTitle: "TRADITIONAL AFTERNOON MERIENDA",
-    location: "Soco's Residence",
-    description: "Savor traditional Filipino afternoon delicacies and native treats paired with refreshing tropical drinks and friendly conversation."
-  },
-  {
-    id: 10,
-    time: "3:15 PM – 5:00 PM",
-    programTime: "03:15 PM",
-    startTime: "20261114T151500",
-    endTime: "20261114T170000",
-    duration: "1 hr 45 mins",
-    title: "Afternoon Community Ministry",
-    programTitle: "AFTERNOON COMMUNITY MINISTRY",
-    location: "Nearby Safe Community Territory",
-    description: "Share uplifting spiritual thoughts and scriptures with receptive residents in a peaceful, welcoming neighborhood."
-  },
-  {
-    id: 11,
-    time: "5:00 PM – 5:15 PM",
-    programTime: "05:00 PM",
-    startTime: "20261114T170000",
-    endTime: "20261114T171500",
-    duration: "15 mins",
-    title: "Transfer to Dinner Venue",
-    programTitle: "TRANSFER TO DINNER VENUE",
-    location: "En Route to Early Dinner",
-    description: "A short, comfortable transfer with rest and water breaks to prepare for our evening dinner gathering."
-  },
-  {
-    id: 12,
-    time: "5:15 PM – 6:00 PM",
+    time: "05:15 PM – 06:00 PM",
     programTime: "05:15 PM",
     startTime: "20261114T171500",
     endTime: "20261114T180000",
     duration: "45 mins",
-    title: "Early Dinner & Evening Association",
-    programTitle: "EARLY DINNER & EVENING ASSOCIATION",
-    location: "Venue Near Kingdom Hall",
-    description: "Share a delicious evening meal, reminisce on the day's highlights, and celebrate the unforgettable bond of Christian brotherhood."
-  },
-  {
-    id: 13,
-    time: "6:00 PM – 6:45 PM",
-    programTime: "06:00 PM",
-    startTime: "20261114T180000",
-    endTime: "20261114T184500",
-    duration: "45 mins",
-    title: "Farewell & Souvenir Presentation",
-    programTitle: "FAREWELL & SOUVENIR PRESENTATION",
-    location: "San Miguel & Mercado Kingdom Hall",
-    description: "Receive handcrafted mementos and special tokens of love from the congregation, take group photographs, and bid fond goodbyes."
-  },
-  {
-    id: 14,
-    time: "6:45 PM – 8:45 PM",
-    programTime: "06:45 PM",
-    startTime: "20261114T184500",
-    endTime: "20261114T204500",
-    duration: "2 hrs",
-    title: "Evening Return Journey to Manila",
-    programTitle: "EVENING RETURN JOURNEY TO MANILA",
-    location: "En Route to Okada Manila",
-    description: "Rest comfortably in your chartered van as we travel back to Manila with joyful hearts and cherished memories."
-  },
-  {
-    id: 15,
-    time: "8:45 PM",
-    programTime: "08:45 PM",
-    startTime: "20261114T204500",
-    endTime: "20261114T210000",
-    duration: "Arrival",
-    title: "Safe Return at Okada Manila",
-    programTitle: "SAFE RETURN AT OKADA MANILA",
-    location: "Okada Manila Main Lobby",
-    description: "Safe arrival at your hotel lobby. May Jehovah continue to richly bless your convention stay!"
+    title: "Early dinner & farewell",
+    programTitle: "EARLY DINNER & FAREWELL",
+    location: "Jollibee",
+    mapLink: "https://maps.app.goo.gl/fTfmTCoUTLtHpLAaA",
+    notes: "With van ride back to Okada Manila.",
+    description: "Early dinner and farewell gathering at Jollibee, followed by van ride back to Okada Manila."
   }
 ];
 
@@ -272,31 +220,46 @@ function renderTimeline() {
                 <i data-lucide="clock" class="w-4 h-4"></i>
               </span>
               <span class="font-bold text-emerald-950 text-base md:text-lg tracking-tight">
-                ${act.time}
+                ${escapeHtml(act.time)}
               </span>
             </div>
             
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
               <i data-lucide="hourglass" class="w-3.5 h-3.5 text-slate-500"></i>
-              Duration: ${act.duration}
+              Duration: ${escapeHtml(act.duration)}
             </span>
           </div>
 
           <!-- Activity Title -->
           <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-2 leading-snug">
-            ${act.title}
+            ${escapeHtml(act.title)}
           </h3>
 
-          <!-- Location -->
-          <div class="flex items-start gap-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1.5 rounded-lg mb-3">
-            <i data-lucide="map-pin" class="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5"></i>
-            <span>${act.location}</span>
+          <!-- Location & Google Maps Link -->
+          <div class="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1.5 rounded-lg mb-3">
+            <div class="flex items-center gap-2 min-w-0">
+              <i data-lucide="map-pin" class="w-4 h-4 text-emerald-700 flex-shrink-0"></i>
+              <span>${escapeHtml(act.location)}</span>
+            </div>
+            ${act.mapLink ? `
+              <a href="${escapeHtml(act.mapLink)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-brand-900 hover:text-brand-950 font-bold underline decoration-brand-700/40 hover:decoration-brand-900 transition-colors ml-auto shrink-0">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+            ` : ''}
           </div>
 
           <!-- Delegate Experience Description -->
           <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-            ${act.description}
+            ${escapeHtml(act.description)}
           </p>
+
+          ${act.notes ? `
+            <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200/80 text-amber-900 text-xs font-semibold">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-amber-700 flex-shrink-0"></i>
+              <span><strong>Note:</strong> ${escapeHtml(act.notes)}</span>
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
@@ -327,7 +290,7 @@ function generateICSFile() {
     icsLines.push(`DTEND;TZID=Asia/Manila:${act.endTime}`);
     icsLines.push(`SUMMARY:${act.title}`);
     icsLines.push(`LOCATION:${act.location}`);
-    icsLines.push(`DESCRIPTION:${act.description} (Duration: ${act.duration})`);
+    icsLines.push(`DESCRIPTION:${act.description}${act.notes ? ' [Note: ' + act.notes + ']' : ''}${act.mapLink ? ' [Maps: ' + act.mapLink + ']' : ''}`);
     icsLines.push("STATUS:CONFIRMED");
     icsLines.push("END:VEVENT");
   });
@@ -373,27 +336,42 @@ function renderProgramSchedule() {
         <!-- Left Column: Time -->
         <div class="sm:w-36 flex-shrink-0">
           <span class="inline-block font-extrabold text-amber-700 sm:text-slate-900 text-sm sm:text-base tracking-tight font-mono">
-            ${act.programTime}
+            ${escapeHtml(act.programTime)}
           </span>
           <span class="block text-[11px] text-slate-500 font-medium">
-            ${act.duration === 'Arrival' ? 'Destination' : act.duration}
+            ${escapeHtml(act.duration)}
           </span>
         </div>
 
         <!-- Right Column: Title, Description & Location -->
         <div class="flex-1 min-w-0">
           <h4 class="font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wide mb-1 leading-snug">
-            ${act.programTitle}
+            ${escapeHtml(act.programTitle)}
           </h4>
 
           <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-2">
-            ${act.description}
+            ${escapeHtml(act.description)}
           </p>
 
-          <div class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
-            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
-            <span>${act.location}</span>
+          <div class="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+            <div class="inline-flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
+              <span>${escapeHtml(act.location)}</span>
+            </div>
+            ${act.mapLink ? `
+              <a href="${escapeHtml(act.mapLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-900 hover:underline inline-flex items-center gap-0.5 ml-1 font-bold">
+                <span>(Maps)</span>
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </a>
+            ` : ''}
           </div>
+
+          ${act.notes ? `
+            <div class="mt-2 text-[11px] text-amber-900 font-medium flex items-center gap-1.5 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60 inline-flex">
+              <i data-lucide="info" class="w-3 h-3 text-amber-700 flex-shrink-0"></i>
+              <span><strong>Note:</strong> ${escapeHtml(act.notes)}</span>
+            </div>
+          ` : ''}
         </div>
 
       </div>
@@ -402,6 +380,98 @@ function renderProgramSchedule() {
 
   if (window.lucide) {
     window.lucide.createIcons();
+  }
+}
+
+/* ==========================================================================
+   3. Google Sheet Live Sync Utility (Delegate Schedule)
+   ========================================================================== */
+
+function convertTimeToICS(tStr) {
+  if (!tStr) return "20261114T070000";
+  const match = tStr.trim().match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (!match) return "20261114T070000";
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2];
+  const ampm = (match[3] || '').toUpperCase();
+  if (ampm === 'PM' && hours < 12) hours += 12;
+  if (ampm === 'AM' && hours === 12) hours = 0;
+  const hh = hours.toString().padStart(2, '0');
+  return `20261114T${hh}${minutes}00`;
+}
+
+function parseGoogleSheetCSV(csvText) {
+  const lines = csvText.trim().split(/\r?\n/);
+  if (lines.length < 2) return null;
+  const items = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let c = 0; c < line.length; c++) {
+      if (line[c] === '"') inQ = !inQ;
+      else if (line[c] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += line[c];
+    }
+    cols.push(cur.trim());
+    
+    const timeRaw = cols[0] || '';
+    const activityRaw = (cols[1] || '').replace(/^"|"$/g, '').trim();
+    const locationRaw = (cols[2] || '').replace(/^"|"$/g, '').trim();
+    const mapLinkRaw = (cols[3] || '').replace(/^"|"$/g, '').trim();
+    const notesRaw = (cols[4] || '').replace(/^"|"$/g, '').trim();
+
+    if (!timeRaw && !activityRaw) continue;
+
+    const timeParts = timeRaw.split('-').map(t => t.trim());
+    const startTimeStr = timeParts[0] || '';
+    const endTimeStr = timeParts[1] || '';
+
+    let duration = '';
+    if (startTimeStr && endTimeStr) {
+      duration = `${startTimeStr} – ${endTimeStr}`;
+    }
+
+    items.push({
+      id: i,
+      time: timeRaw.replace('-', '–'),
+      programTime: startTimeStr || timeRaw,
+      startTime: convertTimeToICS(startTimeStr),
+      endTime: convertTimeToICS(endTimeStr || startTimeStr),
+      duration: duration || 'Scheduled',
+      title: activityRaw,
+      programTitle: activityRaw.toUpperCase(),
+      location: locationRaw || (activityRaw.toLowerCase().includes('van ride') ? 'Okada Manila to Kingdom Hall, Bulacan' : 'San Miguel, Hagonoy, Bulacan'),
+      mapLink: mapLinkRaw,
+      notes: notesRaw,
+      description: activityRaw + (notesRaw ? ` (${notesRaw})` : '')
+    });
+  }
+  return items;
+}
+
+async function syncActivitiesFromGoogleSheet() {
+  if (!navigator.onLine) return;
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(GOOGLE_SHEET_CSV_URL, { signal: controller.signal, cache: "no-cache" });
+    clearTimeout(timeoutId);
+    if (!res.ok) return;
+    const csvText = await res.text();
+    const parsed = parseGoogleSheetCSV(csvText);
+    if (parsed && parsed.length > 0) {
+      ACTIVITIES = parsed;
+      if (document.getElementById('timeline-container')) {
+        renderTimeline();
+      }
+      if (document.getElementById('program-schedule-items')) {
+        renderProgramSchedule();
+      }
+    }
+  } catch (err) {
+    // Graceful offline fallback to pre-embedded activities
   }
 }
 
@@ -731,6 +801,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTimeline();
     initSaveToPhone();
     initGuestbookForm();
+    syncActivitiesFromGoogleSheet();
   }
 
   // Page 2: Copied Program Schedule Sheet (program.html)
@@ -745,6 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderProgramSchedule();
     initSaveScheduleImage();
+    syncActivitiesFromGoogleSheet();
   }
 
   // If Lucide icons are available
