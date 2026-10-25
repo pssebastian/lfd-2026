@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lfd-v2-cache-v29';
+const CACHE_NAME = 'lfd-v2-cache-v30';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -39,11 +39,16 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests; let POST (e.g., webhook submissions) pass through directly to network
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   // Network first, fallback to cache for offline availability
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
+        if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith('http')) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);

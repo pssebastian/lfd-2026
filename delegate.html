@@ -258,6 +258,19 @@
           </div>
         </div>
 
+        <!-- Error Message Banner -->
+        <div id="guestbook-error" class="hidden mb-6 p-5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-950 flex items-start gap-3.5 animate-fade-in shadow-sm">
+          <div class="w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="alert-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm sm:text-base text-rose-900">Unable to Send Message</h4>
+            <p id="guestbook-error-text" class="text-xs sm:text-sm text-rose-800 mt-0.5 leading-relaxed">
+              We couldn't reach the server right now. Please check your internet connection and try again.
+            </p>
+          </div>
+        </div>
+
         <!-- Guestbook Form Card -->
         <div class="card-clean p-6 sm:p-8 bg-[#FAF9F5] border border-slate-200">
           <form id="guestbook-form" class="space-y-4">

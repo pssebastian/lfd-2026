@@ -747,11 +747,14 @@ function initSaveScheduleImage() {
    3. Delegates Guestbook Form Logic
    ========================================================================== */
 
+const GUESTBOOK_WEBHOOK_URL = 'https://myn8n.webredirect.org/webhook/guestbook-submission';
+
 function initGuestbookForm() {
   const form = document.getElementById('guestbook-form');
-  if (!form) return;
+  if (!form || form.dataset.initialized === 'true') return;
+  form.dataset.initialized = 'true';
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nameInput = document.getElementById('guest-name');
@@ -759,61 +762,107 @@ function initGuestbookForm() {
     const messageInput = document.getElementById('guest-message');
     const submitBtn = document.getElementById('guest-submit-btn');
     const successBox = document.getElementById('guestbook-success');
+    const errorBox = document.getElementById('guestbook-error');
+    const errorText = document.getElementById('guestbook-error-text');
 
-    const name = nameInput.value.trim();
-    const congregation = congInput.value.trim();
-    const message = messageInput.value.trim();
+    const name = nameInput ? nameInput.value.trim() : '';
+    const congregation = congInput ? congInput.value.trim() : '';
+    const message = messageInput ? messageInput.value.trim() : '';
 
     if (!name || !congregation || !message) {
-      alert("Please fill in your name, home congregation, and message.");
+      showToast("Please fill in your name, home congregation, and message.");
       return;
     }
 
-    const originalBtn = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `<span>Sharing message...</span>`;
+    // Hide previous notification banners
+    if (successBox) successBox.classList.add('hidden');
+    if (errorBox) errorBox.classList.add('hidden');
 
-    (async () => {
+    const originalBtn = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin w-4 h-4 text-amber-400 shrink-0 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Sending message...</span>
+      `;
+    }
+
+    try {
+      const response = await fetch(GUESTBOOK_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          congregation,
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}`);
+      }
+
+      // Store a local archive copy in localStorage
       try {
-        try {
-          const existing = JSON.parse(localStorage.getItem('lfd_v2_guestbook') || '[]');
-          existing.push({
-            id: 'entry-' + Date.now(),
-            name,
-            congregation,
-            message,
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-          });
-          localStorage.setItem('lfd_v2_guestbook', JSON.stringify(existing));
-        } catch (err) {}
+        const existing = JSON.parse(localStorage.getItem('lfd_v2_guestbook') || '[]');
+        existing.push({
+          id: 'entry-' + Date.now(),
+          name,
+          congregation,
+          message,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        });
+        localStorage.setItem('lfd_v2_guestbook', JSON.stringify(existing));
+      } catch (storageErr) {}
 
-        try {
-          await fetch('https://myn8n.webredirect.org/webhook/guestbook-submission', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, congregation, message }),
-          });
-        } catch (fetchErr) {
-          console.warn("Guestbook remote webhook unavailable, stored locally:", fetchErr);
-        }
+      // Reset form on successful submission
+      form.reset();
 
-        form.reset();
-        if (successBox) {
-          successBox.classList.remove('hidden');
-          successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // Show success notification banner
+      if (successBox) {
+        successBox.classList.remove('hidden');
+        successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      showToast("Thank you for sharing your experience with us!");
+    } catch (err) {
+      console.error("Failed to submit guestbook entry:", err);
+
+      // Save offline draft to localStorage so message is never lost
+      try {
+        const pending = JSON.parse(localStorage.getItem('lfd_v2_guestbook_pending') || '[]');
+        pending.push({
+          id: 'pending-' + Date.now(),
+          name,
+          congregation,
+          message,
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('lfd_v2_guestbook_pending', JSON.stringify(pending));
+      } catch (saveErr) {}
+
+      // Show friendly error banner and keep form inputs filled for retry
+      if (errorBox) {
+        if (errorText) {
+          errorText.textContent = "We couldn't reach the server right now. Please check your internet connection and try again.";
         }
-        showToast("Thank you for sharing your experience with us!");
-      } catch (err) {
-        console.error("Failed to submit guestbook entry:", err);
-        showToast("Could not send message. Please check your connection and try again.");
-      } finally {
+        errorBox.classList.remove('hidden');
+        errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      showToast("Could not send message. Please check your connection and try again.");
+    } finally {
+      if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtn;
         if (window.lucide) window.lucide.createIcons();
       }
-    })();
+    }
   });
 }
 
@@ -924,6 +973,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTimeline();
     initGuestbookForm();
     syncActivitiesFromGoogleSheet();
+  } else if (document.getElementById('guestbook-form')) {
+    initGuestbookForm();
   }
 
   // Live Program Schedule Sheet (program.html & delegate.html offscreen snapshot)
