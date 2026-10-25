@@ -326,40 +326,40 @@ function renderProgramSchedule() {
 
   const html = ACTIVITIES.map((act) => {
     return `
-      <div class="program-item p-4 sm:p-5 flex flex-col sm:flex-row gap-2 sm:gap-6 items-start border-b border-slate-100 last:border-b-0">
+      <div class="program-item flex flex-row items-start gap-6 p-4 sm:p-5 border-b border-slate-100 last:border-b-0" style="display: flex !important; flex-direction: row !important; align-items: flex-start !important; gap: 24px !important;">
         
-        <!-- Left Column: Exact Time Range & Duration in harmony with Itinerary -->
-        <div class="sm:w-48 flex-shrink-0">
-          <span class="inline-block font-bold text-emerald-950 text-sm sm:text-base tracking-tight font-mono leading-tight">
+        <!-- Left Column: Exact Time Range & Duration (Fixed 175px width) -->
+        <div class="program-time-col w-44 flex-shrink-0" style="width: 175px !important; min-width: 175px !important; max-width: 175px !important; flex: 0 0 175px !important;">
+          <span class="inline-block font-bold text-slate-900 text-sm sm:text-base tracking-tight font-mono leading-tight">
             ${escapeHtml(act.time)}
           </span>
-          <span class="block text-[11px] text-slate-500 font-semibold mt-0.5">
+          <span class="block text-[11px] text-slate-500 font-medium mt-1">
             Duration: ${escapeHtml(act.duration)}
           </span>
         </div>
 
         <!-- Right Column: Exact Activity Title, Location & Description -->
-        <div class="flex-1 min-w-0">
-          <h4 class="font-bold text-slate-900 text-sm sm:text-base mb-1.5 leading-snug">
+        <div class="program-detail-col flex-1 min-w-0" style="flex: 1 1 auto !important; min-width: 0 !important;">
+          <h4 class="font-bold text-slate-900 text-[15px] mb-1.5 leading-snug">
             ${escapeHtml(act.title)}
           </h4>
 
-          <div class="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 mb-1.5">
+          <div class="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/80 mb-1">
             <div class="inline-flex items-center gap-1.5">
               <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
               <span>${escapeHtml(act.location)}</span>
             </div>
             ${act.mapLink ? `
-              <a href="${escapeHtml(act.mapLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-900 hover:underline inline-flex items-center gap-0.5 ml-1 font-bold">
+              <span class="text-brand-900 inline-flex items-center gap-0.5 ml-1 font-semibold">
                 <span>(Google Maps)</span>
                 <i data-lucide="external-link" class="w-3 h-3"></i>
-              </a>
+              </span>
             ` : ''}
           </div>
 
           <!-- Description (Shows ONLY notes from google sheet, blank if none) -->
           ${act.description ? `
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-1">
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-1.5 font-normal">
               ${escapeHtml(act.description)}
             </p>
           ` : ''}
@@ -515,41 +515,94 @@ async function generateScheduleCanvas() {
     allowTaint: true,
     backgroundColor: '#ffffff',
     logging: false,
-    windowWidth: 1020,
+    windowWidth: 1024,
+    width: 960,
     onclone: (clonedDoc) => {
       const clonedWrapper = clonedDoc.getElementById('live-schedule-offscreen');
       if (clonedWrapper) {
         clonedWrapper.style.position = 'static';
         clonedWrapper.style.left = '0';
         clonedWrapper.style.top = '0';
-        clonedWrapper.style.width = '1020px';
-        clonedWrapper.style.maxWidth = '1020px';
+        clonedWrapper.style.width = '960px';
+        clonedWrapper.style.maxWidth = '960px';
         clonedWrapper.style.margin = '0 auto';
         clonedWrapper.style.overflow = 'visible';
       }
 
       const clonedSheet = clonedDoc.getElementById('program-sheet');
       if (clonedSheet) {
-        clonedSheet.style.width = '1020px';
-        clonedSheet.style.maxWidth = '1020px';
+        clonedSheet.style.width = '960px';
+        clonedSheet.style.maxWidth = '960px';
         clonedSheet.style.margin = '0 auto';
-        clonedSheet.style.borderRadius = '24px';
+        clonedSheet.style.borderRadius = '0px';
         clonedSheet.style.overflow = 'hidden';
         clonedSheet.style.boxShadow = 'none';
+        clonedSheet.style.border = '1px solid #e2e8f0';
 
-        const grid = clonedSheet.querySelector('.grid');
-        if (grid) {
-          grid.style.display = 'grid';
-          grid.style.gridTemplateColumns = '320px 1fr';
+        const header = clonedSheet.querySelector('.program-header');
+        if (header) {
+          header.style.borderRadius = '0px';
+          header.style.padding = '32px 36px';
         }
 
-        const headerFlex = clonedSheet.querySelector('.program-header > div');
+        const headerFlex = clonedSheet.querySelector('.program-header-flex') || (header ? header.firstElementChild : null);
         if (headerFlex) {
           headerFlex.style.display = 'flex';
           headerFlex.style.flexDirection = 'row';
           headerFlex.style.justifyContent = 'space-between';
           headerFlex.style.alignItems = 'center';
+          headerFlex.style.gap = '24px';
         }
+
+        const bodyLayout = clonedSheet.querySelector('.program-body-layout');
+        if (bodyLayout) {
+          bodyLayout.style.display = 'flex';
+          bodyLayout.style.flexDirection = 'row';
+          bodyLayout.style.alignItems = 'stretch';
+          bodyLayout.style.borderRadius = '0px';
+        }
+
+        const sidebar = clonedSheet.querySelector('.program-sidebar');
+        if (sidebar) {
+          sidebar.style.display = 'block';
+          sidebar.style.width = '310px';
+          sidebar.style.minWidth = '310px';
+          sidebar.style.maxWidth = '310px';
+          sidebar.style.flex = '0 0 310px';
+          sidebar.style.padding = '28px 24px';
+          sidebar.style.borderRight = '1px solid #e2e8f0';
+          sidebar.style.backgroundColor = '#fafbfc';
+        }
+
+        const scheduleCol = clonedSheet.querySelector('.program-schedule-column');
+        if (scheduleCol) {
+          scheduleCol.style.flex = '1 1 auto';
+          scheduleCol.style.minWidth = '0';
+          scheduleCol.style.padding = '8px 18px';
+          scheduleCol.style.backgroundColor = '#ffffff';
+        }
+
+        clonedSheet.querySelectorAll('.program-item').forEach(item => {
+          item.style.display = 'flex';
+          item.style.flexDirection = 'row';
+          item.style.alignItems = 'flex-start';
+          item.style.gap = '24px';
+          item.style.padding = '18px 14px';
+
+          const timeCol = item.querySelector('.program-time-col');
+          if (timeCol) {
+            timeCol.style.width = '175px';
+            timeCol.style.minWidth = '175px';
+            timeCol.style.maxWidth = '175px';
+            timeCol.style.flex = '0 0 175px';
+          }
+
+          const detailCol = item.querySelector('.program-detail-col');
+          if (detailCol) {
+            detailCol.style.flex = '1 1 auto';
+            detailCol.style.minWidth = '0';
+          }
+        });
 
         clonedSheet.querySelectorAll('svg').forEach(svg => {
           svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');

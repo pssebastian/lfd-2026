@@ -79,11 +79,11 @@
     <!-- =====================================================================
          Copied Event Program Sheet (Targets html2canvas and Print)
          ===================================================================== -->
-    <div id="program-sheet" class="program-sheet bg-white mb-10">
+    <div id="program-sheet" class="program-sheet bg-white mb-10 rounded-none border border-slate-200">
       
       <!-- Program Header Banner (Matching Attached Template) -->
-      <div class="program-header p-6 sm:p-10 relative overflow-hidden">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+      <div class="program-header p-8 sm:p-10 relative overflow-hidden rounded-none">
+        <div class="program-header-flex flex flex-row items-center justify-between gap-6 relative z-10">
           
           <div class="space-y-3">
             <!-- Logo & Badge -->
@@ -107,7 +107,7 @@
           </div>
 
           <!-- Right Floating Date & Time Badge (Matching Template) -->
-          <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[170px] shadow-lg self-stretch md:self-auto flex flex-col justify-center">
+          <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[170px] shadow-lg shrink-0 flex flex-col justify-center">
             <div class="flex items-center justify-center gap-2 mb-1">
               <i data-lucide="calendar" class="w-4 h-4 text-amber-300"></i>
               <span class="font-extrabold text-white text-base tracking-wide">14 NOV 2026</span>
@@ -121,11 +121,11 @@
         </div>
       </div>
 
-      <!-- Program Body: 2 Columns on Desktop, Stacked on Mobile -->
-      <div class="grid grid-cols-1 md:grid-cols-12 bg-white">
+      <!-- Program Body: 2 Columns Side-by-Side (Sidebar + Schedule Table) -->
+      <div class="program-body-layout flex flex-row bg-white rounded-none">
         
         <!-- Left Column (Sidebar Info Cards, matching template) -->
-        <div class="md:col-span-4 bg-slate-50/70 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-slate-200/80 space-y-7">
+        <div class="program-sidebar bg-slate-50/70 p-6 sm:p-8 border-r border-slate-200/80 space-y-7 shrink-0">
           
           <!-- Date Block -->
           <div class="space-y-1">
@@ -189,8 +189,8 @@
         </div>
 
         <!-- Right Column (The Schedule Table Rows) -->
-        <div class="md:col-span-8 p-2 sm:p-4 divide-y divide-slate-100">
-          <div id="program-schedule-items">
+        <div class="program-schedule-column flex-1 p-2 sm:p-4 divide-y divide-slate-100 min-w-0">
+          <div id="program-schedule-items" class="program-schedule-items">
             <!-- Rendered dynamically via app.js -->
           </div>
         </div>

@@ -79,32 +79,87 @@ body {
   border-color: #cbd5e1;
 }
 
-/* Program Template Sheet Styling */
+/* Program Template Sheet Styling - Exact 2-Column Poster Layout with Square Corners */
 .program-sheet {
   background: #ffffff;
-  border-radius: 1.5rem;
+  border-radius: 0 !important;
   overflow: hidden;
-  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
+  width: 960px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 .program-header {
-  background: linear-gradient(135deg, #041a17 0%, #0a2d26 60%, #0f3d35 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #041a17 0%, #0a2d26 60%, #0f3d35 100%) !important;
+  color: #ffffff !important;
   position: relative;
+  padding: 32px 36px !important;
+  border-radius: 0 !important;
+}
+
+.program-header-flex {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+.program-body-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  background: #ffffff !important;
+  border-radius: 0 !important;
+}
+
+.program-sidebar {
+  width: 310px !important;
+  min-width: 310px !important;
+  max-width: 310px !important;
+  flex: 0 0 310px !important;
+  background-color: #fafbfc !important;
+  padding: 28px 24px !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+.program-schedule-column {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding: 8px 18px !important;
+  background: #ffffff !important;
 }
 
 .program-item {
-  border-bottom: 1px solid #edf2f7;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 24px !important;
+  padding: 18px 14px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
   transition: background-color 0.15s ease;
 }
 
 .program-item:last-child {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 .program-item:hover {
   background-color: #f8fafc;
+}
+
+.program-time-col {
+  width: 175px !important;
+  min-width: 175px !important;
+  max-width: 175px !important;
+  flex: 0 0 175px !important;
+}
+
+.program-detail-col {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
 }
 
 /* Interactive States & Touch Targets */
@@ -190,7 +245,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     border: 1px solid #cbd5e1 !important;
     width: 100% !important;
     margin: 0 !important;
-    border-radius: 1rem !important;
+    border-radius: 0 !important;
     overflow: hidden !important;
     page-break-inside: avoid;
   }
@@ -198,6 +253,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .program-header {
     background: linear-gradient(135deg, #041a17 0%, #0a2d26 60%, #0f3d35 100%) !important;
     color: #ffffff !important;
+    border-radius: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
