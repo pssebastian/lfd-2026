@@ -176,21 +176,9 @@
         </div>
       </a>
 
-      <!-- Desktop Nav Actions: Save Image, Print (PDF), Home (Logout) -->
+      <!-- Desktop Nav Actions: Print (PDF), Save Image, Logout -->
       <div class="hidden sm:flex items-center gap-2 sm:gap-2.5">
-        <!-- Save Slip as Image Action (Direct Download / Share) -->
-        <button 
-          id="btn-header-save-image" 
-          type="button"
-          onclick="exportVolunteerSlipImage()"
-          class="w-32 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
-          title="Save Slip as Image (PNG)"
-        >
-          <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
-          <span>Save Image</span>
-        </button>
-
-        <!-- Print Slip as PDF Action -->
+        <!-- 1. Print Slip as PDF Action -->
         <button 
           id="btn-header-print" 
           type="button"
@@ -202,16 +190,28 @@
           <span>Print (PDF)</span>
         </button>
 
-        <!-- Home Action -->
+        <!-- 2. Save Slip as Image Action (Direct Download / Share) -->
         <button 
-          id="home-logout-btn" 
+          id="btn-header-save-image" 
           type="button"
-          onclick="handleVolunteerHome()"
-          class="w-32 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
-          title="Return to Welcome Page"
+          onclick="exportVolunteerSlipImage()"
+          class="w-32 py-1.5 rounded-full bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+          title="Save Slip as Image (PNG)"
         >
-          <i data-lucide="home" class="w-4 h-4 text-amber-700"></i>
-          <span>Home</span>
+          <i data-lucide="image" class="w-4 h-4 text-amber-300"></i>
+          <span>Save Image</span>
+        </button>
+
+        <!-- 3. Logout Action -->
+        <button 
+          id="header-logout-btn" 
+          type="button"
+          onclick="handleVolunteerLogout()"
+          class="w-32 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+          title="Logout of Volunteer Portal"
+        >
+          <i data-lucide="log-out" class="w-4 h-4 text-amber-700"></i>
+          <span>Logout</span>
         </button>
       </div>
 
@@ -292,22 +292,23 @@
 
   <!-- =========================================================================
        Mobile Bottom Action Bar (Fixed at bottom edge of mobile viewport)
+       Order: Print (PDF), Save Image, Logout
        ========================================================================= -->
   <nav id="mobile-bottom-bar" aria-label="Mobile Volunteer Actions" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 sm:hidden no-print shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-[max(0.625rem,env(safe-area-inset-bottom))]">
     <div class="grid grid-cols-3 gap-2 max-w-md mx-auto w-full">
-      <!-- Home (Return to Welcome Page) Button -->
+      <!-- 1. Print / Save as PDF Button -->
       <button 
-        id="btn-mobile-home"
+        id="btn-mobile-print"
         type="button"
-        onclick="handleVolunteerHome()"
-        class="w-full py-2.5 px-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
-        title="Return to Welcome Page"
+        onclick="window.print()"
+        class="w-full py-2.5 px-2 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
+        title="Print Slip or Save as PDF"
       >
-        <i data-lucide="home" class="w-4 h-4 text-amber-700 shrink-0"></i>
-        <span>Home</span>
+        <i data-lucide="printer" class="w-4 h-4 text-slate-600 shrink-0"></i>
+        <span>Print (PDF)</span>
       </button>
 
-      <!-- Save Image (Primary CTA Button) -->
+      <!-- 2. Save Image (Primary CTA Button) -->
       <button 
         id="btn-mobile-save-image"
         type="button"
@@ -319,16 +320,16 @@
         <span>Save Image</span>
       </button>
 
-      <!-- Print / Save as PDF Button -->
+      <!-- 3. Logout Button -->
       <button 
-        id="btn-mobile-print"
+        id="btn-mobile-logout"
         type="button"
-        onclick="window.print()"
-        class="w-full py-2.5 px-2 rounded-xl bg-slate-100 active:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
-        title="Print Slip or Save as PDF"
+        onclick="handleVolunteerLogout()"
+        class="w-full py-2.5 px-2 rounded-xl bg-amber-50 active:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors touch-target whitespace-nowrap"
+        title="Logout of Volunteer Portal"
       >
-        <i data-lucide="printer" class="w-4 h-4 text-slate-600 shrink-0"></i>
-        <span>Print (PDF)</span>
+        <i data-lucide="log-out" class="w-4 h-4 text-amber-700 shrink-0"></i>
+        <span>Logout</span>
       </button>
     </div>
   </nav>
@@ -762,21 +763,31 @@
         if (printSlipActivitiesContainer) printSlipActivitiesContainer.innerHTML = allDaySlipHtml;
       }
 
-      // 7. Home Action
-      function handleVolunteerHome() {
-        // Navigates to Welcome Portal while keeping 3-day passcode session active
+      // 7. Logout Action
+      function handleVolunteerLogout() {
+        if (typeof VolunteerService !== 'undefined') {
+          VolunteerService.logout();
+        } else {
+          try {
+            localStorage.removeItem('lfd_v2_auth_volunteer');
+            localStorage.removeItem('lfd_v2_auth_volunteer_expiry');
+            localStorage.removeItem('lfd_v2_volunteer_name');
+            sessionStorage.removeItem('lfd_v2_auth_volunteer');
+            sessionStorage.removeItem('lfd_v2_volunteer_name');
+          } catch (e) {}
+        }
         window.location.href = 'index.html';
       }
-      window.handleVolunteerHome = handleVolunteerHome;
+      window.handleVolunteerLogout = handleVolunteerLogout;
 
-      const homeLogoutBtn = document.getElementById('home-logout-btn');
-      if (homeLogoutBtn) {
-        homeLogoutBtn.addEventListener('click', handleVolunteerHome);
+      const headerLogoutBtn = document.getElementById('header-logout-btn');
+      if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener('click', handleVolunteerLogout);
       }
 
-      const mobileHomeBtn = document.getElementById('btn-mobile-home');
-      if (mobileHomeBtn) {
-        mobileHomeBtn.addEventListener('click', handleVolunteerHome);
+      const mobileLogoutBtn = document.getElementById('btn-mobile-logout');
+      if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', handleVolunteerLogout);
       }
 
       // 8. Re-initialize Lucide Icons
