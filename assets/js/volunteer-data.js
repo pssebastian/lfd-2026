@@ -5,7 +5,7 @@
  */
 
 const VOLUNTEER_CONFIG = {
-  passcode: 'ic2026-lfd-smcv',
+  passcode: 'sanmig',
   eventDate: 'Friday, October 24, 2026',
   congregation: 'San Miguel Congregation',
   location: 'Hagonoy, Bulacan'

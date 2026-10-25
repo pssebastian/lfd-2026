@@ -454,10 +454,10 @@
           return;
         }
 
-        // 2. Validate Passcode (ic2026-lfd-smcv)
+        // 2. Validate Passcode (sanmig)
         const isPasscodeValid = typeof VolunteerService !== 'undefined' 
           ? VolunteerService.verifyPasscode(enteredPasscode) 
-          : (enteredPasscode.toLowerCase() === 'ic2026-lfd-smcv');
+          : (enteredPasscode.toLowerCase() === 'sanmig');
 
         if (isPasscodeValid) {
           volunteerPasscodeError.classList.add('hidden');

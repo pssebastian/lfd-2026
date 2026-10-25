@@ -5,7 +5,7 @@
  */
 
 const PASSWORDS = {
-  DELEGATE: "WYEYGLMLR4PX"
+  DELEGATE: "LFD2026"
 };
 
 // Activity Itinerary Tailored for Visiting Delegates

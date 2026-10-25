@@ -5,8 +5,8 @@
 Mobile-first web companion designed for visiting international delegates participating in **"Local for a Day" (LFD)** during the **2026 International Convention** hosted by the **San Miguel & Mercado Congregations** in Hagonoy, Bulacan, Philippines.
 
 ### Quick Access Credentials:
-- **Delegates Passcode**: `WYEYGLMLR4PX`
-- **Volunteers Passcode**: `ic2026-lfd-smcv` (select name from roster of 26 volunteers)
+- **Delegates Passcode**: `lfd2026`
+- **Volunteers Passcode**: `sanmig` (select name from roster of 26 volunteers)
 
 ---
 
@@ -16,7 +16,7 @@ Mobile-first web companion designed for visiting international delegates partici
    - Seamless, vertically centered canvas.
    - Typographic hierarchy for *"Become a Local for a Day with San Miguel Congregation"*.
    - Interactive role selection (**Visiting Delegate** vs. **Congregation Volunteer**).
-   - Group passcode verification (`WYEYGLMLR4PX`).
+   - Group passcode verification (`lfd2026`).
 
 2. **Delegate Companion Portal (`delegate.html`)**
    - **Hero Section**: High-contrast midnight emerald canvas with golden amber script *"Maligayang Pagdating"* and heartfelt gratitude sub-heading.
@@ -36,7 +36,7 @@ Mobile-first web companion designed for visiting international delegates partici
 4. **Volunteer Companion Portal (`volunteer.html`)**
    - **Auth Gateway**: Username & Password modal on `index.html`.
      - "Username": Alphabetical selector with all 26 congregation volunteers.
-     - "Password": Secure volunteer passcode (`ic2026-lfd-smcv`).
+     - "Password": Secure volunteer passcode (`sanmig`).
    - **Personalized Header**: Dynamic welcome greeting with color-coded role tags (Department Leads, Transport/Drivers, Hospitality/Merienda, Ministry Partners, Guest Care).
    - **General Responsibilities**: Comprehensive cards per role detailing key responsibilities in Filipino/Taglish.
    - **Personalized Activity Timeline**: Chronological activities with scheduled times, assignment-specific notes (e.g. ministry partners), and venue/reminders.
