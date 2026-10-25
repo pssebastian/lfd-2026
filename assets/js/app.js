@@ -235,7 +235,7 @@ function renderTimeline() {
             ${escapeHtml(act.title)}
           </h3>
 
-          <!-- Location & Google Maps Link -->
+          <!-- Location & Map Link -->
           <div class="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1.5 rounded-lg mb-2">
             <div class="flex items-center gap-2 min-w-0">
               <i data-lucide="map-pin" class="w-4 h-4 text-emerald-700 flex-shrink-0"></i>
@@ -243,7 +243,7 @@ function renderTimeline() {
             </div>
             ${act.mapLink ? `
               <a href="${escapeHtml(act.mapLink)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-brand-900 hover:text-brand-950 font-bold underline decoration-brand-700/40 hover:decoration-brand-900 transition-colors ml-auto shrink-0">
-                <span>Google Maps</span>
+                <span>Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </a>
             ` : ''}
