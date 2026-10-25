@@ -344,17 +344,10 @@ function renderProgramSchedule() {
             ${escapeHtml(act.title)}
           </h4>
 
-          <div class="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/80 mb-1">
-            <div class="inline-flex items-center gap-1.5">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
-              <span>${escapeHtml(act.location)}</span>
-            </div>
-            ${act.mapLink ? `
-              <span class="text-brand-900 inline-flex items-center gap-0.5 ml-1 font-semibold">
-                <span>(Google Maps)</span>
-                <i data-lucide="external-link" class="w-3 h-3"></i>
-              </span>
-            ` : ''}
+          <!-- Location (Clean, unbordered, no background container, no Google Maps text/link) -->
+          <div class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-800 mb-1 leading-normal">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700 flex-shrink-0"></i>
+            <span>${escapeHtml(act.location)}</span>
           </div>
 
           <!-- Description (Shows ONLY notes from google sheet, blank if none) -->
