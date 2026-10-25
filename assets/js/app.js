@@ -16,8 +16,8 @@ let ACTIVITIES = [
     id: 1,
     time: "07:15 AM – 09:45 AM",
     programTime: "07:15 AM",
-    startTime: "20261114T071500",
-    endTime: "20261114T094500",
+    startTime: "20261026T071500",
+    endTime: "20261026T094500",
     duration: "2.5 hrs",
     title: "Van ride: Okada Manila to Kingdom Hall",
     programTitle: "VAN RIDE: OKADA MANILA TO KINGDOM HALL",
@@ -30,8 +30,8 @@ let ACTIVITIES = [
     id: 2,
     time: "09:45 AM – 10:00 AM",
     programTime: "09:45 AM",
-    startTime: "20261114T094500",
-    endTime: "20261114T100000",
+    startTime: "20261026T094500",
+    endTime: "20261026T100000",
     duration: "0.25 hrs",
     title: "Welcome and morning merienda",
     programTitle: "WELCOME AND MORNING MERIENDA",
@@ -44,8 +44,8 @@ let ACTIVITIES = [
     id: 3,
     time: "10:00 AM – 11:30 AM",
     programTime: "10:00 AM",
-    startTime: "20261114T100000",
-    endTime: "20261114T113000",
+    startTime: "20261026T100000",
+    endTime: "20261026T113000",
     duration: "1.5 hrs",
     title: "Morning ministry appointments",
     programTitle: "MORNING MINISTRY APPOINTMENTS",
@@ -58,8 +58,8 @@ let ACTIVITIES = [
     id: 4,
     time: "12:00 PM – 01:00 PM",
     programTime: "12:00 PM",
-    startTime: "20261114T120000",
-    endTime: "20261114T130000",
+    startTime: "20261026T120000",
+    endTime: "20261026T130000",
     duration: "1 hr",
     title: "Filipino lunch & warm association",
     programTitle: "FILIPINO LUNCH & WARM ASSOCIATION",
@@ -72,8 +72,8 @@ let ACTIVITIES = [
     id: 5,
     time: "01:00 PM – 02:30 PM",
     programTime: "01:00 PM",
-    startTime: "20261114T130000",
-    endTime: "20261114T143000",
+    startTime: "20261026T130000",
+    endTime: "20261026T143000",
     duration: "1.5 hrs",
     title: "Relax, chat & enjoy everyday local life",
     programTitle: "RELAX, CHAT & ENJOY EVERYDAY LOCAL LIFE",
@@ -86,8 +86,8 @@ let ACTIVITIES = [
     id: 6,
     time: "02:30 PM – 03:00 PM",
     programTime: "02:30 PM",
-    startTime: "20261114T143000",
-    endTime: "20261114T150000",
+    startTime: "20261026T143000",
+    endTime: "20261026T150000",
     duration: "0.5 hrs",
     title: "Light outing with fun activities",
     programTitle: "LIGHT OUTING WITH FUN ACTIVITIES",
@@ -100,8 +100,8 @@ let ACTIVITIES = [
     id: 7,
     time: "03:00 PM – 03:30 PM",
     programTime: "03:00 PM",
-    startTime: "20261114T150000",
-    endTime: "20261114T153000",
+    startTime: "20261026T150000",
+    endTime: "20261026T153000",
     duration: "0.5 hrs",
     title: "Afternoon merienda & association",
     programTitle: "AFTERNOON MERIENDA & ASSOCIATION",
@@ -114,8 +114,8 @@ let ACTIVITIES = [
     id: 8,
     time: "03:30 PM – 05:00 PM",
     programTime: "03:30 PM",
-    startTime: "20261114T153000",
-    endTime: "20261114T170000",
+    startTime: "20261026T153000",
+    endTime: "20261026T170000",
     duration: "1.5 hrs",
     title: "Flexible afternoon ministry",
     programTitle: "FLEXIBLE AFTERNOON MINISTRY",
@@ -128,8 +128,8 @@ let ACTIVITIES = [
     id: 9,
     time: "05:15 PM – 06:00 PM",
     programTime: "05:15 PM",
-    startTime: "20261114T171500",
-    endTime: "20261114T180000",
+    startTime: "20261026T171500",
+    endTime: "20261026T180000",
     duration: "0.75 hrs",
     title: "Early dinner & farewell",
     programTitle: "EARLY DINNER & FAREWELL",
@@ -280,7 +280,7 @@ function generateICSFile() {
   ACTIVITIES.forEach(act => {
     icsLines.push("BEGIN:VEVENT");
     icsLines.push(`UID:lfd-2026-act-${act.id}@sanmiguel.congregation`);
-    icsLines.push(`DTSTAMP:20261114T000000Z`);
+    icsLines.push(`DTSTAMP:20261026T000000Z`);
     icsLines.push(`DTSTART;TZID=Asia/Manila:${act.startTime}`);
     icsLines.push(`DTEND;TZID=Asia/Manila:${act.endTime}`);
     icsLines.push(`SUMMARY:${act.title}`);
@@ -407,16 +407,16 @@ function calculateDecimalDuration(timeRaw) {
 }
 
 function convertTimeToICS(tStr) {
-  if (!tStr) return "20261114T070000";
+  if (!tStr) return "20261026T070000";
   const match = tStr.trim().match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
-  if (!match) return "20261114T070000";
+  if (!match) return "20261026T070000";
   let hours = parseInt(match[1], 10);
   const minutes = match[2];
   const ampm = (match[3] || '').toUpperCase();
   if (ampm === 'PM' && hours < 12) hours += 12;
   if (ampm === 'AM' && hours === 12) hours = 0;
   const hh = hours.toString().padStart(2, '0');
-  return `20261114T${hh}${minutes}00`;
+  return `20261026T${hh}${minutes}00`;
 }
 
 function parseGoogleSheetCSV(csvText) {
