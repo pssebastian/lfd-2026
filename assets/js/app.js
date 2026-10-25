@@ -133,7 +133,7 @@ let ACTIVITIES = [
     duration: "0.75 hrs",
     title: "Early dinner & farewell",
     programTitle: "EARLY DINNER & FAREWELL",
-    location: "Jollibee, San Pedro, Hagonoy, Bulacan",
+    location: "Jollibee - San Pedro",
     mapLink: "https://maps.app.goo.gl/fTfmTCoUTLtHpLAaA",
     notes: "With van ride back to Okada Manila.",
     description: "With van ride back to Okada Manila."
@@ -437,7 +437,10 @@ function parseGoogleSheetCSV(csvText) {
     
     const timeRaw = cols[0] || '';
     const activityRaw = (cols[1] || '').replace(/^"|"$/g, '').trim();
-    const locationRaw = (cols[2] || '').replace(/^"|"$/g, '').trim();
+    let locationRaw = (cols[2] || '').replace(/^"|"$/g, '').trim();
+    if (locationRaw === "Jollibee, San Pedro, Hagonoy, Bulacan" || locationRaw.startsWith("Jollibee, San Pedro")) {
+      locationRaw = "Jollibee - San Pedro";
+    }
     const mapLinkRaw = (cols[3] || '').replace(/^"|"$/g, '').trim();
     const notesRaw = (cols[4] || '').replace(/^"|"$/g, '').trim();
 
@@ -770,31 +773,47 @@ function initGuestbookForm() {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `<span>Sharing message...</span>`;
 
-    setTimeout(() => {
+    (async () => {
       try {
-        const existing = JSON.parse(localStorage.getItem('lfd_v2_guestbook') || '[]');
-        existing.push({
-          id: 'entry-' + Date.now(),
-          name,
-          congregation,
-          message,
-          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-        });
-        localStorage.setItem('lfd_v2_guestbook', JSON.stringify(existing));
-      } catch (err) {}
+        try {
+          const existing = JSON.parse(localStorage.getItem('lfd_v2_guestbook') || '[]');
+          existing.push({
+            id: 'entry-' + Date.now(),
+            name,
+            congregation,
+            message,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          });
+          localStorage.setItem('lfd_v2_guestbook', JSON.stringify(existing));
+        } catch (err) {}
 
-      form.reset();
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtn;
-      if (window.lucide) window.lucide.createIcons();
+        try {
+          await fetch('https://myn8n.webredirect.org/webhook/guestbook-submission', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, congregation, message }),
+          });
+        } catch (fetchErr) {
+          console.warn("Guestbook remote webhook unavailable, stored locally:", fetchErr);
+        }
 
-      if (successBox) {
-        successBox.classList.remove('hidden');
-        successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        form.reset();
+        if (successBox) {
+          successBox.classList.remove('hidden');
+          successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        showToast("Thank you for sharing your experience with us!");
+      } catch (err) {
+        console.error("Failed to submit guestbook entry:", err);
+        showToast("Could not send message. Please check your connection and try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtn;
+        if (window.lucide) window.lucide.createIcons();
       }
-
-      showToast("Thank you for sharing your experience with us!");
-    }, 450);
+    })();
   });
 }
 
