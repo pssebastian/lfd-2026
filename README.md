@@ -4,10 +4,6 @@
 
 Mobile-first web companion designed for visiting international delegates participating in **"Local for a Day" (LFD)** during the **2026 International Convention** hosted by the **San Miguel & Mercado Congregations** in Hagonoy, Bulacan, Philippines.
 
-### Quick Access Credentials:
-- **Delegates Passcode**: `lfd2026`
-- **Volunteers Passcode**: `sanmig` (select name from roster of 26 volunteers)
-
 ---
 
 ## 🌟 Pages & Architecture
